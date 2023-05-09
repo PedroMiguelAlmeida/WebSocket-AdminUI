@@ -12,7 +12,9 @@ import Users from "./scenes/users";
 import Form from "./scenes/form";
 import Logs from "./scenes/logs";
 import About from "./scenes/about";
+import EntityDataGridRooms from "./components/EntityDataGridRooms";
 import { useMemo } from "react";
+import EntityDataGridClients from "./components/EntityDataGridClient";
 
 function App() {
 
@@ -35,6 +37,8 @@ function App() {
               <Route path="/form" element={<Form />} />
               <Route path="/logs" element={<Logs />} />
               <Route path="/about" element={<About />} />
+              <Route path="/gridRoom" element={<EntityDataGridRooms />} />
+              <Route path="/gridClient" element={<EntityDataGridClients/>} />
             </Routes>
           </main>
           </div>

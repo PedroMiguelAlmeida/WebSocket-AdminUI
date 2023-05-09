@@ -4,6 +4,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useGetRoomsQuery } from "../state/api";
 import { tokens } from "../theme";
 import Header from "./Header";
+import EntityDataGridClients from "./EntityDataGridClient";
+import { Redirect, Route, Switch, Router, useRoutes,useNavigate, Link  } from "react-router-dom";
 
 const EntityDataGridRooms = () => {
   const theme = useTheme();
@@ -12,6 +14,7 @@ const EntityDataGridRooms = () => {
   const columns = [
     {
       field: "roomName",
+      renderCell: (params)=>{return(<Link to={"/gridClient"}>{params.value}</Link>)},
       headerName: "Room Name",
       flex: 1,
     },

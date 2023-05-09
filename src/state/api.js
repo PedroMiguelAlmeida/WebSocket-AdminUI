@@ -20,4 +20,4 @@ export const api = createApi({
   }),
 });
 
-export const { useGetRoomsQuery, useGetUsersQuery } = api;
+export const { useGetRoomsQuery, useGetUsersQuery,useGetRoomQuery } = api;
