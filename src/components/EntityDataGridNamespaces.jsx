@@ -1,29 +1,47 @@
 import React, { useState } from "react";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useGetRoomsQuery } from "../state/api";
+import { useGetNamespacesQuery, useGetRoomsQuery } from "../state/api";
 import { tokens } from "../theme";
 import EntityDataGridRooms from "./EntityDataGridRooms";
-import { Redirect, Route, Switch, Router, useRoutes,useNavigate, Link  } from "react-router-dom";
-
+import {
+  Redirect,
+  Route,
+  Switch,
+  Router,
+  useRoutes,
+  useNavigate,
+  Link,
+} from "react-router-dom";
 
 const EntityDataGridNamespaces = () => {
   const [active, setActive] = useState("namespaceComponent");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { data, isLoading } = useGetRoomsQuery("namespaceDefault");
+  const { data, isLoading } = useGetNamespacesQuery();
   const navigate = useNavigate();
 
   const columns = [
     {
       field: "namespace",
-      renderCell: (params)=>{return(<Link to={"/gridRoom"}>{params.value}</Link>)},
+      renderCell: (params) => {
+        return (
+          <Link to={"/gridRoom"} state={{ namespace: params.value }}>
+            {params.value}
+          </Link>
+        );
+      },
       headerName: "Namespace",
       flex: 1,
     },
     {
-      field: "amountRooms",
+      field: "roomsCount",
       headerName: "Nº Rooms",
+      flex: 1,
+    },
+    {
+      field: "clientsCount",
+      headerName: "Nº Clients",
       flex: 1,
     },
   ];
@@ -32,15 +50,16 @@ const EntityDataGridNamespaces = () => {
       <DataGrid
         loading={isLoading || !data}
         getRowId={(row) => row.id}
-        // onRowClick={(params, event) => {
-        //   handleRowClick();
-        // }}
+        onRowClick={() => {
+          console.log("BANANAS");
+        }}
         rows={
           data
             ? data.map((entry) => ({
                 id: entry._id,
-                namespace:entry.namespace ,
-                amountRooms: data.length,
+                namespace: entry.namespace,
+                roomsCount: entry.roomsCount,
+                clientsCount: entry.clientsCount,
               }))
             : []
         }

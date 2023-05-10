@@ -10,7 +10,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { useGetRoomsQuery } from "../../state/api";
+import { useGetNamespacesQuery, useGetRoomsQuery,useGetNamespaceQuery } from "../../state/api";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 
@@ -41,11 +41,11 @@ const Room = (data) => {
           See More
         </Button>
       </CardActions>
-      <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-        {data.clients.map((client) => (
+      {/* <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+        {data.rooms.clients.map((client) => (
           <Typography sx={{ ml: "1.5rem" }} component="div"> {client} </Typography>
         ))}
-      </Collapse>
+      </Collapse> */}
     </Card>
   );
 };
@@ -53,7 +53,7 @@ const Room = (data) => {
 const Rooms = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const { data, isLoading } = useGetRoomsQuery("namespaceDefault");
+  const { data, isLoading } = useGetNamespaceQuery("namespace1");
   const isNonMobile = useMediaQuery("(min-width:1000px");
 
   console.log("data", data);
@@ -72,12 +72,11 @@ const Rooms = () => {
             "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
           }}
         >
-          {data.map((data) => (
+          {data.rooms.map((entry) => (
             <Room
-              key={data.roomName}
+              key={entry._id}
+              roomName={entry.roomName} 
               namespace={data.namespace}
-              roomName={data.roomName}
-              clients={data.clients}
             />
           ))}
         </Box>
