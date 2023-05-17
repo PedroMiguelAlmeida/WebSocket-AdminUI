@@ -55,7 +55,6 @@ const EntityDataGridRooms = () => {
     navigate("/createRoom");
   };
 
-
   return (
     <Box mt="40px" height="75vh">
       <DataGrid
@@ -73,7 +72,7 @@ const EntityDataGridRooms = () => {
         columns={columns}
       />
       <Box>
-      <Link
+        <Link
           to={"/createRoom"}
           state={{
             namespace: location.state.namespace,
@@ -87,7 +86,16 @@ const EntityDataGridRooms = () => {
             "&:hover": { backgroundColor: colors.primary[800] },
           }}
         >
-          Add New Room
+          <Button
+            type="button"
+            sx={{
+              backgroundColor: colors.primary[400],
+              color: colors.grey[100],
+              "&:hover": { backgroundColor: colors.primary[800] },
+            }}
+          >
+            Add New Room
+          </Button>
         </Link>
       </Box>
     </Box>

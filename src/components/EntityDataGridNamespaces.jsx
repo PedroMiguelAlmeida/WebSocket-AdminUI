@@ -77,7 +77,16 @@ const EntityDataGridNamespaces = () => {
             "&:hover": { backgroundColor: colors.primary[800] },
           }}
         >
-          Add New Namespace
+          <Button
+            type="button"
+            sx={{
+              backgroundColor: colors.primary[400],
+              color: colors.grey[100],
+              "&:hover": { backgroundColor: colors.primary[800] },
+            }}
+          >
+            Add New Namespace
+          </Button>
         </Link>
       </Box>
     </Box>
