@@ -23,6 +23,7 @@ const EntityDataGridRooms = () => {
   const colors = tokens(theme.palette.mode);
   const { data, isLoading } = useGetNamespaceQuery(location.state.namespace);
   const navigate = useNavigate();
+  const [arrIds, setArrIds] = useState([]);
 
   const columns = [
     {
@@ -51,12 +52,36 @@ const EntityDataGridRooms = () => {
     },
   ];
 
-  const navigateToCreateRoom = () => {
-    navigate("/createRoom");
+  const deleteRoom = async (id) => {
+    await fetch(
+      `http://localhost:8080/api/namespaces/${location.state.namespace}/rooms/${id}`,
+      {
+        method: "DELETE",
+      }
+    );
+  };
+
+  const handleDelete = async (arrIds) => {
+    for (let id = 0; id < arrIds.length; id++) {
+      await deleteRoom(id);
+    }
   };
 
   return (
     <Box mt="40px" height="75vh">
+      <Button
+        onClick={handleDelete}
+        sx={{
+          m: "2rem 0",
+          p: "1rem",
+          ml: "1rem",
+          backgroundColor: colors.primary[400],
+          color: colors.grey[100],
+          "&:hover": { backgroundColor: colors.primary[800] },
+        }}
+      >
+        Delete
+      </Button>
       <DataGrid
         loading={isLoading || !data}
         getRowId={(row) => row.id}
@@ -69,7 +94,12 @@ const EntityDataGridRooms = () => {
               }))
             : []
         }
+        checkboxSelection
+        disableSelectionOnClick
         columns={columns}
+        onRowSelectionModelChange={(arrIds) => {
+          console.log(arrIds);
+        }}
       />
       <Box>
         <Link

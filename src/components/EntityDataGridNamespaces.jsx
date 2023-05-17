@@ -47,8 +47,34 @@ const EntityDataGridNamespaces = () => {
       flex: 1,
     },
   ];
+
+  const deleteNamespace = async (id) => {
+    await fetch(`http://localhost:8080/api/namespaces/${id}`, {
+      method: "DELETE",
+    });
+  };
+
+  const handleDelete = async (arrIds) => {
+    for (let id = 0; id < arrIds.length; id++) {
+      await deleteNamespace(id);
+    }
+  };
+
   return (
     <Box mt="40px" height="75vh">
+      <Button
+        onClick={handleDelete}
+        sx={{
+          m: "2rem 0",
+          p: "1rem",
+          ml: "1rem",
+          backgroundColor: colors.primary[400],
+          color: colors.grey[100],
+          "&:hover": { backgroundColor: colors.primary[800] },
+        }}
+      >
+        Delete
+      </Button>
       <DataGrid
         loading={isLoading || !data}
         getRowId={(row) => row.id}
@@ -63,6 +89,11 @@ const EntityDataGridNamespaces = () => {
             : []
         }
         columns={columns}
+        checkboxSelection
+        disableSelectionOnClick
+        onRowSelectionModelChange={(arrIds) => {
+          console.log(arrIds);
+        }}
       />
 
       <Box>
