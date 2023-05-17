@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, useMediaQuery, useTheme, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetNamespacesQuery, useGetRoomsQuery } from "../state/api";
 import { tokens } from "../theme";
@@ -13,6 +13,7 @@ import {
   useNavigate,
   Link,
 } from "react-router-dom";
+import UpdateNamespace from "./UpdateNamespace";
 
 const EntityDataGridNamespaces = () => {
   const [active, setActive] = useState("namespaceComponent");
@@ -33,6 +34,7 @@ const EntityDataGridNamespaces = () => {
       },
       headerName: "Namespace",
       flex: 1,
+      editable: true,
     },
     {
       field: "roomsCount",
@@ -50,9 +52,6 @@ const EntityDataGridNamespaces = () => {
       <DataGrid
         loading={isLoading || !data}
         getRowId={(row) => row.id}
-        onRowClick={() => {
-          console.log("BANANAS");
-        }}
         rows={
           data
             ? data.map((entry) => ({
@@ -65,6 +64,22 @@ const EntityDataGridNamespaces = () => {
         }
         columns={columns}
       />
+
+      <Box>
+        <Link
+          to={"/createNamespace"}
+          sx={{
+            m: "2rem 0",
+            p: "1rem",
+            ml: "1rem",
+            backgroundColor: colors.primary[400],
+            color: colors.grey[100],
+            "&:hover": { backgroundColor: colors.primary[800] },
+          }}
+        >
+          Add New Namespace
+        </Link>
+      </Box>
     </Box>
   );
 };

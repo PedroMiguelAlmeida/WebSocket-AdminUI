@@ -12,14 +12,18 @@ import Users from "./scenes/users";
 import Form from "./scenes/form";
 import Logs from "./scenes/logs";
 import About from "./scenes/about";
+import Login from "./scenes/login";
 import EntityDataGridRooms from "./components/EntityDataGridRooms";
 import { useMemo } from "react";
 import EntityDataGridClients from "./components/EntityDataGridClient";
+import CreateNamespace from "./components/CreateNamespace";
+import CreateRoom from "./components/CreateRoom";
 
 function App() {
 
   const [theme, colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
+  
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -30,6 +34,7 @@ function App() {
           <main className="content">
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
+              <Route path="/login" element={<Login/>} isSidebar={false}/>
               <Route path="/" element={<Dashboard />} />
               <Route path="/namespaces" element={<Namespaces />} />
               <Route path="/rooms" element={<Rooms />} />
@@ -39,6 +44,8 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/gridRoom" element={<EntityDataGridRooms />} />
               <Route path="/gridClient" element={<EntityDataGridClients/>} />
+              <Route path="/createNamespace" element={<CreateNamespace/>} />
+              <Route path="/createRoom" element={<CreateRoom/>} />
             </Routes>
           </main>
           </div>
