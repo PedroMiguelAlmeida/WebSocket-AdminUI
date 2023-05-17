@@ -16,8 +16,6 @@ const Dashboard = () => {
       <Box>
       <EntityDataGridNamespaces />
       </Box>
-
-      {/* <EntityDataGridRooms/> */}
     </Box>
   );
 };

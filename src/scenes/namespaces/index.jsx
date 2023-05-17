@@ -1,42 +1,93 @@
-import { useTheme,Box } from "@mui/material";
-import { useGetUsersQuery,useGetRoomsQuery } from "../../state/api";
+import React, { useState } from "react";
+import {
+  Box,
+  Card,
+  CardActions,
+  CardContent,
+  Collapse,
+  Button,
+  useMediaQuery,
+  Typography,
+  useTheme,
+} from "@mui/material";
+import { useGetNamespacesQuery, useGetRoomsQuery,useGetNamespaceQuery } from "../../state/api";
 import { tokens } from "../../theme";
-import { DataGrid } from "@mui/x-data-grid";
 import Header from "../../components/Header";
 
+const Namespace = (data) => {
+  const [isExpanded, setIsExpanded] = useState(true);
+  // debugger
+  console.log(data)
+  return (
+    <Card
+      sx={{
+        backgroundImage: "none",
+        borderRadius: "0.55rem",
+      }}
+    >
+      <CardContent>
+        <Typography variant="h5" component="div">
+          Namespace: {data.namespace}
+        </Typography>
+        <Typography sx={{ mb: "0.5rem" }}>
+          Amount of Rooms: {data.roomsCount}
+        </Typography>
+        <Typography sx={{ mb: "0.5rem" }}>
+          Amount of Clients: {data.clientsCount}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button
+          variant="primary"
+          size="small"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
+          See More
+        </Button>
+      </CardActions>
+      {/* <Collapse in={isExpanded} timeout="auto" unmountOnExit>
+        {data.rooms.clients.map((client) => (
+          <Typography sx={{ ml: "1.5rem" }} component="div"> {client} </Typography>
+        ))}
+      </Collapse> */}
+    </Card>
+  );
+};
 
 const Namespaces = () => {
-  // {setSelectedLink,link}
-  // const {
-  //   state: { rooms },
-  //   dispatch,
-  // } = useValue()
-
-  // useEffect(()=>{
-  //   setSelectedLink(link);
-  //   if (rooms.length===0) getRooms(dispatch)
-
-  // },[]);
-  // const columns = useMemo(()=>[
-  //   {field:'roomName',headerName:'Name',flex:1}
-  // ],[])
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { data, isLoading } = useGetNamespacesQuery();
+  const isNonMobile = useMediaQuery("(min-width:1000px");
 
-
-
-
-
+  console.log("data", data);
   return (
-    <Box>
+    <Box m="1.5rem 2.5rem">
       <Header title="Namespaces" />
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-
-      </Box>
+      {data || !isLoading ? (
+        <Box
+          mt="20px"
+          display="grid"
+          gridTemplateColumns="repeat(4,minmax(0,1fr))"
+          justifyContent="space-between"
+          rowGap="20px"
+          columnGap="1.33%"
+          sx={{
+            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+          }}
+        >
+          {data.map((entry) => (
+            <Namespace
+              key={entry._id}
+              namespace={entry.namespace} 
+              roomsCount={entry.roomsCount}
+              clientsCount={entry.clientsCount}
+            />
+          ))}
+        </Box>
+      ) : (
+        <>Namespaces data loading...</>
+      )}
     </Box>
   );
 };
