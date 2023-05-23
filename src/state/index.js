@@ -1,8 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit"
 
 const initialState = {
-    mode:"dark",
-    userid:"6457d9f73bf1aaaaa83cf503"
+    mode:"light",
+    user:"null",
+    token:"null"
 };
 
 export const globalSlice = createSlice({
@@ -16,7 +17,7 @@ export const globalSlice = createSlice({
             state.user=action.payload.user;
             state.token=action.payload.token;
         },
-        setLogout:(state)=>{
+        setLogout:(state,action)=>{
             state.user=null;
             state.token=null;
         },
@@ -26,3 +27,6 @@ export const globalSlice = createSlice({
 
 export const {setMode,setLogin,setLogout} = globalSlice.actions;
 export default globalSlice.reducer;
+
+export const selectCurrentUser = (state) => state.global.user
+export const selectCurrentToken = (state) => state.global.token

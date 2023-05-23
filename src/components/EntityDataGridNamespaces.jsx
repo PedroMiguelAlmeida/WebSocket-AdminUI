@@ -21,6 +21,8 @@ const EntityDataGridNamespaces = () => {
   const colors = tokens(theme.palette.mode);
   const { data, isLoading } = useGetNamespacesQuery();
   const navigate = useNavigate();
+  const [arrNamespaces, setArrNamespaces] = useState([]);
+
 
   const columns = [
     {
@@ -48,36 +50,26 @@ const EntityDataGridNamespaces = () => {
     },
   ];
 
-  const deleteNamespace = async (id) => {
-    await fetch(`http://localhost:8080/api/namespaces/${id}`, {
+  const deleteNamespace = async (namespace) => {
+    console.log(namespace);
+    await fetch(`http://localhost:8080/api/namespaces/${namespace}`, {
       method: "DELETE",
     });
   };
 
-  const handleDelete = async (arrIds) => {
-    for (let id = 0; id < arrIds.length; id++) {
-      await deleteNamespace(id);
+  const handleDelete = async (arrNamespaces) => {
+    console.log(arrNamespaces)
+    for (let i = 0; i < arrNamespaces.length; i++) {
+      console.log(` Handle Delete Room ${{arrNamespaces}}`)
+      await deleteNamespace(arrNamespaces[i].toString());
     }
   };
 
   return (
     <Box mt="40px" height="75vh">
-      <Button
-        onClick={handleDelete}
-        sx={{
-          m: "2rem 0",
-          p: "1rem",
-          ml: "1rem",
-          backgroundColor: colors.primary[400],
-          color: colors.grey[100],
-          "&:hover": { backgroundColor: colors.primary[800] },
-        }}
-      >
-        Delete
-      </Button>
       <DataGrid
         loading={isLoading || !data}
-        getRowId={(row) => row.id}
+        getRowId={(row) => row.namespace}
         rows={
           data
             ? data.map((entry) => ({
@@ -91,8 +83,11 @@ const EntityDataGridNamespaces = () => {
         columns={columns}
         checkboxSelection
         disableSelectionOnClick
-        onRowSelectionModelChange={(arrIds) => {
-          console.log(arrIds);
+        onRowSelectionModelChange={(row) => {
+          arrNamespaces.pop(row)
+          console.log(row)
+          setArrNamespaces([...arrNamespaces,row])
+          console.log(arrNamespaces)
         }}
       />
 
@@ -119,6 +114,20 @@ const EntityDataGridNamespaces = () => {
             Add New Namespace
           </Button>
         </Link>
+
+        <Button
+          onClick={()=> handleDelete(arrNamespaces)}
+          sx={{
+            m: "2rem 0",
+            p: "1rem",
+            ml: "1rem",
+            backgroundColor: colors.primary[400],
+            color: colors.grey[100],
+            "&:hover": { backgroundColor: colors.primary[800] },
+          }}
+        >
+          Delete
+        </Button>
       </Box>
     </Box>
   );

@@ -30,7 +30,7 @@ const CreateNamespaceForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
   const createNamespace = async (values, onSubmitProps) => {
-    const createNamespace = await fetch("http://localhost:8080/namespaces", {
+    const createNamespace = await fetch("http://localhost:8080/api/namespaces", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),

@@ -15,15 +15,17 @@ import {
   Link,
 } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { current } from "@reduxjs/toolkit";
 
 const EntityDataGridRooms = () => {
   const theme = useTheme();
   const location = useLocation();
-  console.log(location.state.namespace);
   const colors = tokens(theme.palette.mode);
   const { data, isLoading } = useGetNamespaceQuery(location.state.namespace);
   const navigate = useNavigate();
-  const [arrIds, setArrIds] = useState([]);
+  const [arrRooms, setArrRooms] = useState([]);
+
+
 
   const columns = [
     {
@@ -52,39 +54,29 @@ const EntityDataGridRooms = () => {
     },
   ];
 
-  const deleteRoom = async (id) => {
+  const deleteRoom = async (room) => {
+    console.log(`Delete Room ${room}`)
     await fetch(
-      `http://localhost:8080/api/namespaces/${location.state.namespace}/rooms/${id}`,
+      `http://localhost:8080/api/namespaces/${location.state.namespace}/rooms/${room}`,
       {
         method: "DELETE",
       }
     );
   };
 
-  const handleDelete = async (arrIds) => {
-    for (let id = 0; id < arrIds.length; id++) {
-      await deleteRoom(id);
+  const handleDelete = async (arrRooms) => {
+    console.log(arrRooms)
+    for (let i = 0; i < arrRooms.length; i++) {
+      console.log(` Handle Delete Room ${{arrRooms}}`)
+      await deleteRoom(arrRooms[i].toString());
     }
   };
 
   return (
     <Box mt="40px" height="75vh">
-      <Button
-        onClick={handleDelete}
-        sx={{
-          m: "2rem 0",
-          p: "1rem",
-          ml: "1rem",
-          backgroundColor: colors.primary[400],
-          color: colors.grey[100],
-          "&:hover": { backgroundColor: colors.primary[800] },
-        }}
-      >
-        Delete
-      </Button>
       <DataGrid
         loading={isLoading || !data}
-        getRowId={(row) => row.id}
+        getRowId={(row) => row.roomName}
         rows={
           data
             ? data.rooms.map((entry) => ({
@@ -97,8 +89,11 @@ const EntityDataGridRooms = () => {
         checkboxSelection
         disableSelectionOnClick
         columns={columns}
-        onRowSelectionModelChange={(arrIds) => {
-          console.log(arrIds);
+        onRowSelectionModelChange={ (row) => { 
+          arrRooms.pop(row)
+          console.log(row)
+          setArrRooms([...arrRooms,row])
+          console.log(arrRooms)
         }}
       />
       <Box>
@@ -127,6 +122,20 @@ const EntityDataGridRooms = () => {
             Add New Room
           </Button>
         </Link>
+
+        <Button
+          onClick={()=> handleDelete(arrRooms)}
+          sx={{
+            m: "2rem 0",
+            p: "1rem",
+            ml: "1rem",
+            backgroundColor: colors.primary[400],
+            color: colors.grey[100],
+            "&:hover": { backgroundColor: colors.primary[800] },
+          }}
+        >
+          Delete
+        </Button>
       </Box>
     </Box>
   );
