@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Box, useMediaQuery, useTheme, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { useGetNamespacesQuery, useGetRoomsQuery } from "../state/api";
+import { useGetNamespacesQuery, useGetTopicsQuery } from "../state/api";
 import { tokens } from "../theme";
-import EntityDataGridRooms from "./EntityDataGridRooms";
+import EntityDataGridTopics from "./EntityDataGridTopics";
 import {
   Redirect,
   Route,
@@ -29,7 +29,7 @@ const EntityDataGridNamespaces = () => {
       field: "namespace",
       renderCell: (params) => {
         return (
-          <Link to={"/gridRoom"} state={{ namespace: params.value }}>
+          <Link to={"/gridTopic"} state={{ namespace: params.value }}>
             {params.value}
           </Link>
         );
@@ -39,8 +39,8 @@ const EntityDataGridNamespaces = () => {
       editable: true,
     },
     {
-      field: "roomsCount",
-      headerName: "Nº Rooms",
+      field: "topicsCount",
+      headerName: "Nº Topics",
       flex: 1,
     },
     {
@@ -60,7 +60,7 @@ const EntityDataGridNamespaces = () => {
   const handleDelete = async (arrNamespaces) => {
     console.log(arrNamespaces)
     for (let i = 0; i < arrNamespaces.length; i++) {
-      console.log(` Handle Delete Room ${{arrNamespaces}}`)
+      console.log(` Handle Delete Topic ${{arrNamespaces}}`)
       await deleteNamespace(arrNamespaces[i].toString());
     }
   };
@@ -75,7 +75,7 @@ const EntityDataGridNamespaces = () => {
             ? data.map((entry) => ({
                 id: entry._id,
                 namespace: entry.namespace,
-                roomsCount: entry.roomsCount,
+                topicsCount: entry.topicsCount,
                 clientsCount: entry.clientsCount,
               }))
             : []

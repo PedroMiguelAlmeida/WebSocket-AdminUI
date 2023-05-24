@@ -17,33 +17,33 @@ import {
 import { useLocation } from "react-router-dom";
 import { current } from "@reduxjs/toolkit";
 
-const EntityDataGridRooms = () => {
+const EntityDataGridTopics = () => {
   const theme = useTheme();
   const location = useLocation();
   const colors = tokens(theme.palette.mode);
   const { data, isLoading } = useGetNamespaceQuery(location.state.namespace);
   const navigate = useNavigate();
-  const [arrRooms, setArrRooms] = useState([]);
+  const [arrTopics, setArrTopics] = useState([]);
 
 
 
   const columns = [
     {
-      field: "roomName",
+      field: "topicName",
       renderCell: (params) => {
         return (
           <Link
             to={"/gridClient"}
             state={{
               namespace: location.state.namespace,
-              roomName: params.value,
+              topicName: params.value,
             }}
           >
             {params.value}
           </Link>
         );
       },
-      headerName: "Room Name",
+      headerName: "Topic Name",
       flex: 1,
       editable: "true",
     },
@@ -54,21 +54,21 @@ const EntityDataGridRooms = () => {
     },
   ];
 
-  const deleteRoom = async (room) => {
-    console.log(`Delete Room ${room}`)
+  const deleteTopic = async (topic) => {
+    console.log(`Delete Topic ${topic}`)
     await fetch(
-      `http://localhost:8080/api/namespaces/${location.state.namespace}/rooms/${room}`,
+      `http://localhost:8080/api/namespaces/${location.state.namespace}/topics/${topic}`,
       {
         method: "DELETE",
       }
     );
   };
 
-  const handleDelete = async (arrRooms) => {
-    console.log(arrRooms)
-    for (let i = 0; i < arrRooms.length; i++) {
-      console.log(` Handle Delete Room ${{arrRooms}}`)
-      await deleteRoom(arrRooms[i].toString());
+  const handleDelete = async (arrTopics) => {
+    console.log(arrTopics)
+    for (let i = 0; i < arrTopics.length; i++) {
+      console.log(` Handle Delete Topic ${{arrTopics}}`)
+      await deleteTopic(arrTopics[i].toString());
     }
   };
 
@@ -76,12 +76,12 @@ const EntityDataGridRooms = () => {
     <Box mt="40px" height="75vh">
       <DataGrid
         loading={isLoading || !data}
-        getRowId={(row) => row.roomName}
+        getRowId={(row) => row.topicName}
         rows={
           data
-            ? data.rooms.map((entry) => ({
+            ? data.topics.map((entry) => ({
                 id: entry._id,
-                roomName: entry.roomName,
+                topicName: entry.topicName,
                 amountClients: entry.clients.length,
               }))
             : []
@@ -90,15 +90,15 @@ const EntityDataGridRooms = () => {
         disableSelectionOnClick
         columns={columns}
         onRowSelectionModelChange={ (row) => { 
-          arrRooms.pop(row)
+          arrTopics.pop(row)
           console.log(row)
-          setArrRooms([...arrRooms,row])
-          console.log(arrRooms)
+          setArrTopics([...arrTopics,row])
+          console.log(arrTopics)
         }}
       />
       <Box>
         <Link
-          to={"/createRoom"}
+          to={"/createTopic"}
           state={{
             namespace: location.state.namespace,
           }}
@@ -119,12 +119,12 @@ const EntityDataGridRooms = () => {
               "&:hover": { backgroundColor: colors.primary[800] },
             }}
           >
-            Add New Room
+            Add New Topic
           </Button>
         </Link>
 
         <Button
-          onClick={()=> handleDelete(arrRooms)}
+          onClick={()=> handleDelete(arrTopics)}
           sx={{
             m: "2rem 0",
             p: "1rem",
@@ -141,4 +141,4 @@ const EntityDataGridRooms = () => {
   );
 };
 
-export default EntityDataGridRooms;
+export default EntityDataGridTopics;

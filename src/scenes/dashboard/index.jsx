@@ -4,7 +4,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import EntityDataGrid from "../../components/EntityDataGridNamespaces";
 import EntityDataGridNamespaces from "../../components/EntityDataGridNamespaces";
-import EntityDataGridRooms from "../../components/EntityDataGridRooms";
+import EntityDataGridTopics from "../../components/EntityDataGridTopics";
 
 
 const Dashboard = () => {

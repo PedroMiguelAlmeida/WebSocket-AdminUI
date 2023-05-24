@@ -10,11 +10,11 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { useGetNamespacesQuery, useGetRoomsQuery,useGetNamespaceQuery } from "../../state/api";
+import { useGetNamespacesQuery, useGetTopicsQuery,useGetNamespaceQuery } from "../../state/api";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 
-const Room = (data) => {
+const Topic = (data) => {
   const [isExpanded, setIsExpanded] = useState(true);
   // debugger
   return (
@@ -26,7 +26,7 @@ const Room = (data) => {
     >
       <CardContent>
         <Typography variant="h5" component="div">
-          Room: {data.roomName}
+          Topic: {data.topicName}
         </Typography>
         <Typography sx={{ mb: "0.5rem" }}>
           Namespace: {data.namespace}
@@ -42,7 +42,7 @@ const Room = (data) => {
         </Button>
       </CardActions>
       {/* <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-        {data.rooms.clients.map((client) => (
+        {data.topics.clients.map((client) => (
           <Typography sx={{ ml: "1.5rem" }} component="div"> {client} </Typography>
         ))}
       </Collapse> */}
@@ -50,7 +50,7 @@ const Room = (data) => {
   );
 };
 
-const Rooms = () => {
+const Topics = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const { data, isLoading } = useGetNamespaceQuery("namespace1");
@@ -59,7 +59,7 @@ const Rooms = () => {
   console.log("data", data);
   return (
     <Box m="1.5rem 2.5rem">
-      <Header title="Rooms" />
+      <Header title="Topics" />
       {data || !isLoading ? (
         <Box
           mt="20px"
@@ -72,19 +72,19 @@ const Rooms = () => {
             "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
           }}
         >
-          {data.rooms.map((entry) => (
-            <Room
+          {data.topics.map((entry) => (
+            <Topic
               key={entry._id}
-              roomName={entry.roomName} 
+              topicName={entry.topicName} 
               namespace={data.namespace}
             />
           ))}
         </Box>
       ) : (
-        <>Rooms data loading...</>
+        <>Topics data loading...</>
       )}
     </Box>
   );
 };
 
-export default Rooms;
+export default Topics;
