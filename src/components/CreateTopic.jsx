@@ -19,16 +19,16 @@ import { useLocation } from "react-router-dom";
 import { useGetNamespaceQuery } from "../state/api";
 
 
-const roomSchema = yup.object().shape({
-  roomName: yup.string().required("Room must have a name"),
+const topicSchema = yup.object().shape({
+  topicName: yup.string().required("Topic must have a name"),
   schema: yup.string().optional(),
 });
 
-const defaultValuesRoom = {
-  roomName: "",
+const defaultValuesTopic = {
+  topicName: "",
 };
 
-const CreateRoomForm = () => {
+const CreateTopicForm = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
@@ -36,13 +36,13 @@ const CreateRoomForm = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const location = useLocation();
 
-  console.log(location.state.namespace, "CREATING ROOM IN NAMESPACE")
+  console.log(location.state.namespace, "CREATING Topic IN NAMESPACE")
   const { data, isLoading } =  useGetNamespaceQuery(location.state.namespace);
 
 
-  const createRoom = async (values, onSubmitProps) => {
+  const createTopic = async (values, onSubmitProps) => {
     
-    const createRoom = await fetch(`http://localhost:8080/api/namespaces/${location.state.namespace}/rooms`, {
+    const createTopic = await fetch(`http://localhost:8080/api/namespaces/${location.state.namespace}/topics`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
@@ -52,15 +52,15 @@ const CreateRoomForm = () => {
 
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    await createRoom(values, onSubmitProps);
+    await createTopic(values, onSubmitProps);
   };
 
 
   return (
     <Formik
       onSubmit={handleFormSubmit}
-      initialValues={defaultValuesRoom}
-      validationSchema={roomSchema}
+      initialValues={defaultValuesTopic}
+      validationSchema={topicSchema}
     >
       {({
         values,
@@ -75,16 +75,16 @@ const CreateRoomForm = () => {
         <form onSubmit={handleSubmit}>
           <Box display="grid" gap="25px">
             <TextField
-              label="Room Name"
+              label="Topic Name"
               onBlur={handleBlur}
               onChange={handleChange}
-              value={values.roomName}
+              value={values.topicName}
               sx={{
                 ml:"1rem"
               }}
-              name="roomName"
-              error={Boolean(touched.roomName) && Boolean(errors.roomName)}
-              helperText={touched.roomName && errors.roomName}
+              name="topicName"
+              error={Boolean(touched.topicName) && Boolean(errors.topicName)}
+              helperText={touched.topicName && errors.topicName}
             />
             <Dropzone
               acceptedFiles=".json, .json.schema"
@@ -127,7 +127,7 @@ const CreateRoomForm = () => {
               }}
               
             >
-              Create Room
+              Create Topic
             </Button>
           </Box>
         </form>
@@ -136,4 +136,4 @@ const CreateRoomForm = () => {
   );
 };
 
-export default CreateRoomForm;
+export default CreateTopicForm;

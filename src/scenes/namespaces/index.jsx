@@ -10,7 +10,7 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { useGetNamespacesQuery, useGetRoomsQuery,useGetNamespaceQuery } from "../../state/api";
+import { useGetNamespacesQuery, useGetTopicsQuery,useGetNamespaceQuery } from "../../state/api";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 
@@ -30,7 +30,7 @@ const Namespace = (data) => {
           Namespace: {data.namespace}
         </Typography>
         <Typography sx={{ mb: "0.5rem" }}>
-          Amount of Rooms: {data.roomsCount}
+          Amount of Topics: {data.topicsCount}
         </Typography>
         <Typography sx={{ mb: "0.5rem" }}>
           Amount of Clients: {data.clientsCount}
@@ -46,7 +46,7 @@ const Namespace = (data) => {
         </Button>
       </CardActions>
       {/* <Collapse in={isExpanded} timeout="auto" unmountOnExit>
-        {data.rooms.clients.map((client) => (
+        {data.topics.clients.map((client) => (
           <Typography sx={{ ml: "1.5rem" }} component="div"> {client} </Typography>
         ))}
       </Collapse> */}
@@ -80,7 +80,7 @@ const Namespaces = () => {
             <Namespace
               key={entry._id}
               namespace={entry.namespace} 
-              roomsCount={entry.roomsCount}
+              topicsCount={entry.topicsCount}
               clientsCount={entry.clientsCount}
             />
           ))}

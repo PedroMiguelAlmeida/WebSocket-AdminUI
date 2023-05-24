@@ -1,9 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+
+
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
   reducerPath: "adminApi",
-  tagTypes: ["Namespaces","Namespace","Rooms", "Room", "Users"],
+  tagTypes: ["Namespaces","Namespace","Topics", "Topic", "Users"],
   endpoints: (build) => ({
     getNamespaces: build.query({
       query: () => `Namespaces/`,
@@ -13,9 +15,9 @@ export const api = createApi({
       query: (namespace) => `Namespaces/${namespace}`,
       provideTags: ["Namespaces"],
     }),
-    getRoom: build.query({
-      query: (namespace, roomName) => `Namespaces/${namespace}/rooms/${roomName}`,
-      providesTags: ["Namespace","Room"],
+    getTopic: build.query({
+      query: (namespace, topicName) => `Namespaces/${namespace}/topics/${topicName}`,
+      providesTags: ["Namespace","Topic"],
     }),
     getUsers: build.query({
       query: () => "users",
@@ -24,4 +26,4 @@ export const api = createApi({
   }),
 });
 
-export const {useGetNamespacesQuery,useGetNamespaceQuery,useGetRoomQuery, useGetUsersQuery } = api;
+export const {useGetNamespacesQuery,useGetNamespaceQuery,useGetTopicQuery, useGetUsersQuery } = api;

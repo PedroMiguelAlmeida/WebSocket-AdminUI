@@ -99,8 +99,8 @@ const Sidebar = () => {
               setSelected={setSelected}
             />
             <Item
-              title="Rooms"
-              to="/rooms"
+              title="Topics"
+              to="/topics"
               icon={<CollectionsBookmarkOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

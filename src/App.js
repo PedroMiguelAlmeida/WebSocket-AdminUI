@@ -7,17 +7,17 @@ import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
 import Dashboard from "./scenes/dashboard";
 import Namespaces from "./scenes/namespaces";
-import Rooms from "./scenes/rooms";
+import Topics from "./scenes/topics";
 import Users from "./scenes/users";
 import Form from "./scenes/form";
 import Logs from "./scenes/logs";
 import About from "./scenes/about";
 import Login from "./scenes/login";
-import EntityDataGridRooms from "./components/EntityDataGridRooms";
+import EntityDataGridTopics from "./components/EntityDataGridTopics";
 import { useMemo } from "react";
 import EntityDataGridClients from "./components/EntityDataGridClient";
 import CreateNamespace from "./components/CreateNamespace";
-import CreateRoom from "./components/CreateRoom";
+import CreateTopic from "./components/CreateTopic";
 
 function App() {
 
@@ -37,15 +37,15 @@ function App() {
               <Route path="/login" element={<Login/>} isSidebar={false}/>
               <Route path="/" element={<Dashboard />} />
               <Route path="/namespaces" element={<Namespaces />} />
-              <Route path="/rooms" element={<Rooms />} />
+              <Route path="/topics" element={<Topics />} />
               <Route path="/users" element={<Users />} />
               <Route path="/form" element={<Form />} />
               <Route path="/logs" element={<Logs />} />
               <Route path="/about" element={<About />} />
-              <Route path="/gridRoom" element={<EntityDataGridRooms />} />
+              <Route path="/gridTopic" element={<EntityDataGridTopics />} />
               <Route path="/gridClient" element={<EntityDataGridClients/>} />
               <Route path="/createNamespace" element={<CreateNamespace/>} />
-              <Route path="/createRoom" element={<CreateRoom/>} />
+              <Route path="/createTopic" element={<CreateTopic/>} />
             </Routes>
           </main>
           </div>
