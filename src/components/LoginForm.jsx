@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import {
   Box,
   Button,
@@ -25,34 +25,37 @@ const defaultValuesLogin = {
   password: "",
 };
 
-const LoginForm = () => {
+const LoginForm = ({setToken}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
+
   const login = async (values, onSubmitProps) => {
     const loggedInResponse = await fetch("http://localhost:8080/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "same-origin",
       body: JSON.stringify(values),
     });
     const loggedIn = await loggedInResponse.json();
+    return loggedIn
     onSubmitProps.resetForm();
     if (loggedIn) {
-      dispatch(
-        setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
-        })
-      );
-      navigate = "/";
+      setToken({
+        token:loggedIn.sessionToken
+      })
+      console.log(loggedIn.sessionToken)
+      navigate("/")
     }
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    await login(values, onSubmitProps);
+    const response = await login(values, onSubmitProps);
+    setToken(response.sessionToken)
+    // navigate("/")
   };
   <Button
     fullWidth
@@ -64,6 +67,15 @@ const LoginForm = () => {
   >
     Login
   </Button>;
+
+// const handleSubmit = async e => {
+//   e.preventDefault();
+//   const token = await loginUser({
+//     username,
+//     password
+//   });
+//   setToken(token);
+// }
 
   return (
     <Formik
