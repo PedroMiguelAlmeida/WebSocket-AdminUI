@@ -18,7 +18,6 @@ import { useMemo } from "react";
 import EntityDataGridClients from "./components/EntityDataGridClient";
 import CreateNamespace from "./components/CreateNamespace";
 import CreateTopic from "./components/CreateTopic";
-import { RequireAuth } from "react-auth-kit";
 import PrivateRoutes from "./utils/PrivateRoutes";
 
 function App() {

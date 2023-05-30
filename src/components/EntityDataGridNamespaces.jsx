@@ -23,7 +23,6 @@ const EntityDataGridNamespaces = () => {
   const navigate = useNavigate();
   const [arrNamespaces, setArrNamespaces] = useState([]);
 
-
   const columns = [
     {
       field: "namespace",
@@ -36,7 +35,6 @@ const EntityDataGridNamespaces = () => {
       },
       headerName: "Namespace",
       flex: 1,
-      editable: true,
     },
     {
       field: "topicsCount",
@@ -50,6 +48,7 @@ const EntityDataGridNamespaces = () => {
     },
   ];
 
+
   const deleteNamespace = async (namespace) => {
     console.log(namespace);
     await fetch(`http://localhost:8080/api/namespaces/${namespace}`, {
@@ -58,9 +57,9 @@ const EntityDataGridNamespaces = () => {
   };
 
   const handleDelete = async (arrNamespaces) => {
-    console.log(arrNamespaces)
+    console.log(arrNamespaces);
     for (let i = 0; i < arrNamespaces.length; i++) {
-      console.log(` Handle Delete Topic ${{arrNamespaces}}`)
+      console.log(` Handle Delete Topic ${{ arrNamespaces }}`);
       await deleteNamespace(arrNamespaces[i].toString());
     }
   };
@@ -84,12 +83,13 @@ const EntityDataGridNamespaces = () => {
         checkboxSelection
         disableSelectionOnClick
         onRowSelectionModelChange={(row) => {
-          arrNamespaces.pop(row)
-          console.log(row)
-          setArrNamespaces([...arrNamespaces,row])
-          console.log(arrNamespaces)
+          arrNamespaces.pop(row);
+          console.log(row);
+          setArrNamespaces([...arrNamespaces, row]);
+          console.log(arrNamespaces);
         }}
       />
+
 
       <Box>
         <Link
@@ -116,7 +116,7 @@ const EntityDataGridNamespaces = () => {
         </Link>
 
         <Button
-          onClick={()=> handleDelete(arrNamespaces)}
+          onClick={() => handleDelete(arrNamespaces)}
           sx={{
             m: "2rem 0",
             p: "1rem",
