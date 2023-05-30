@@ -19,18 +19,18 @@ import EntityDataGridClients from "./components/EntityDataGridClient";
 import CreateNamespace from "./components/CreateNamespace";
 import CreateTopic from "./components/CreateTopic";
 import { RequireAuth } from "react-auth-kit";
+import PrivateRoutes from "./utils/PrivateRoutes";
 
 function App() {
   const [theme, colorMode] = useMode("Light");
   const [isLogin, setLogin] = useState(false);
   const [user, setUser] = useState();
   const [token, setToken] = useState();
-  console.log("User:",user)
-  console.log("Token:",token)
-  const isSidebar = !!token
+  console.log("User:", user);
+  console.log("Token:", token);
+  const isSidebar = !!token;
 
   return (
-    
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
@@ -39,8 +39,7 @@ function App() {
           <main className="content">
             <Topbar setIsSidebar={isSidebar} />
             <Routes>
-              <Route path="/login" element={<Login setToken={setToken} />} isSidebar={false} />
-              {/* <Route element={<RequireAuth loginPath="/login"/>}> */}
+              <Route element={<PrivateRoutes />}>
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/namespaces" element={<Namespaces />} />
                 <Route path="/topics" element={<Topics />} />
@@ -52,7 +51,12 @@ function App() {
                 <Route path="/gridClient" element={<EntityDataGridClients />} />
                 <Route path="/createNamespace" element={<CreateNamespace />} />
                 <Route path="/createTopic" element={<CreateTopic />} />
-              {/* </Route> */}
+              </Route>
+              <Route
+                path="/login"
+                element={<Login setToken={setToken} />}
+                isSidebar={false}
+              />
             </Routes>
           </main>
         </div>

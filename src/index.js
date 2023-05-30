@@ -23,16 +23,9 @@ const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-    <AuthProvider
-    authType={"cookie"}
-    authName={"WS-MANAGER-AUTH"}
-    cookieDomain={window.location.hostname}
-    cookieSecure={false}>
-
     <BrowserRouter>
       <App />
     </BrowserRouter>
-    </AuthProvider>
     </Provider>
   </React.StrictMode>
 );

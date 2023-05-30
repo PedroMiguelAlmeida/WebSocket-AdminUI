@@ -39,9 +39,10 @@ const LoginForm = ({setToken}) => {
       headers: { "Content-Type": "application/json" },
       credentials: "same-origin",
       body: JSON.stringify(values),
+      withCredentials: true,
+      credentials: "include",
     });
     const loggedIn = await loggedInResponse.json();
-    return loggedIn
     onSubmitProps.resetForm();
     if (loggedIn) {
       setToken({
@@ -53,9 +54,7 @@ const LoginForm = ({setToken}) => {
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
-    const response = await login(values, onSubmitProps);
-    setToken(response.sessionToken)
-    // navigate("/")
+    await login(values, onSubmitProps);
   };
   <Button
     fullWidth
