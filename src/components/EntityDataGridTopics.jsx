@@ -25,7 +25,7 @@ const EntityDataGridTopics = () => {
   const navigate = useNavigate();
   const [arrTopics, setArrTopics] = useState([]);
 
-
+  console.log(data)
 
   const columns = [
     {
@@ -54,8 +54,41 @@ const EntityDataGridTopics = () => {
     },
   ];
 
+  const columnsConnClient = [
+    {
+      field: "client",
+      headerName: "Connected Client",
+    },
+  ];
+
+  const columnsWebsocket = [
+    {
+      field: "msgDate",
+      headerName: "Date",
+    },
+    {
+      field:"clientName",
+      headerName:"Client Name",
+    },
+    {
+      field:"type",
+      headerName:"Event"
+    }
+
+
+  ];
+
+  const rowsWebsocket = [
+    {
+      id:"id1",msgDate:"2 hours ago", clientName: "John", type:"Subscribe"
+    },
+    {
+      id:"id2",msgDate:"5 hours ago", clientName: "Alice", type:"Unsubscribe"
+    },
+  ];
+
   const deleteTopic = async (topic) => {
-    console.log(`Delete Topic ${topic}`)
+    console.log(`Delete Topic ${topic}`);
     await fetch(
       `http://localhost:8080/api/namespaces/${location.state.namespace}/topics/${topic}`,
       {
@@ -65,9 +98,9 @@ const EntityDataGridTopics = () => {
   };
 
   const handleDelete = async (arrTopics) => {
-    console.log(arrTopics)
+    console.log(arrTopics);
     for (let i = 0; i < arrTopics.length; i++) {
-      console.log(` Handle Delete Topic ${{arrTopics}}`)
+      console.log(` Handle Delete Topic ${{ arrTopics }}`);
       await deleteTopic(arrTopics[i].toString());
     }
   };
@@ -89,13 +122,37 @@ const EntityDataGridTopics = () => {
         checkboxSelection
         disableSelectionOnClick
         columns={columns}
-        onRowSelectionModelChange={ (row) => { 
-          arrTopics.pop(row)
-          console.log(row)
-          setArrTopics([...arrTopics,row])
-          console.log(arrTopics)
+        onRowSelectionModelChange={(row) => {
+          arrTopics.pop(row);
+          console.log(row);
+          setArrTopics([...arrTopics, row]);
+          console.log(arrTopics);
         }}
       />
+      <Box>
+        <DataGrid
+          loading={isLoading || !data}
+          getRowId={(row) => row.id}
+          rows={
+            data
+              ? data.clients.map((entry) => ({
+                  id: entry._id,
+                  client: entry.username 
+                }))
+              : []
+          }
+          disableSelectionOnClick
+          columns={columnsConnClient}
+        />
+      </Box>
+      <Box>
+      <DataGrid
+        loading={isLoading || !data}
+        rows={rowsWebsocket}
+        columns={columnsWebsocket}
+        disableSelectionOnClick
+      />
+      </Box>
       <Box>
         <Link
           to={"/createTopic"}
@@ -124,7 +181,7 @@ const EntityDataGridTopics = () => {
         </Link>
 
         <Button
-          onClick={()=> handleDelete(arrTopics)}
+          onClick={() => handleDelete(arrTopics)}
           sx={{
             m: "2rem 0",
             p: "1rem",

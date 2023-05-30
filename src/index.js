@@ -7,7 +7,6 @@ import { setupListeners } from "@reduxjs/toolkit/query";
 import { api } from "./state/api";
 import { configureStore } from "@reduxjs/toolkit";
 import { Provider } from "react-redux";
-import {AuthProvider} from "react-auth-kit";
 import globalReducer from "./state";
 
 const store = configureStore({
