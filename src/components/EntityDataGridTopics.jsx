@@ -30,15 +30,14 @@ const EntityDataGridTopics = (props) => {
 
 	useEffect(() => {
 		console.log("useEffect");
-		props.sendJsonMessage({ type: "test", namespace: location.state.namespace });
+		props.sendJsonMessage({ type: "sub-namespace", namespace: location.state.namespace });
 	}, []);
 
 	useEffect(() => {
 		if (props.lastJsonMessage !== null) {
 			props.lastJsonMessage.id = uuidv4();
-			props.lastJsonMessage.msgDate = "10";
-			props.lastJsonMessage.clientName = props.lastJsonMessage.payload.msg;
 			setMessageHistory((prev) => prev.concat(props.lastJsonMessage));
+			console.log(props.lastJsonMessage);
 		}
 	}, [props.lastJsonMessage, setMessageHistory]);
 
@@ -82,8 +81,8 @@ const EntityDataGridTopics = (props) => {
 			headerName: "Date",
 		},
 		{
-			field: "clientName",
-			headerName: "Client Name",
+			field: "username",
+			headerName: "Username",
 		},
 		{
 			field: "type",
@@ -153,9 +152,9 @@ const EntityDataGridTopics = (props) => {
 					rows={
 						messageHistory
 							? messageHistory.map((entry) => ({
-									id: entry.id,
-									msgDate: entry.msgDate,
-									clientName: entry.clientName,
+									id: entry.payload.id,
+									msgDate: entry.payload.msgDate,
+									username: entry.payload.username,
 									type: entry.type,
 							  }))
 							: []
