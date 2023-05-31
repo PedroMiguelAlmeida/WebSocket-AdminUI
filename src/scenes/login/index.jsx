@@ -3,7 +3,7 @@ import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import LoginForm from "../../components/LoginForm";
 
-const Login = ({setToken}) => {
+const Login = ({setIsLoggedIn}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:1000px");
@@ -17,7 +17,7 @@ const Login = ({setToken}) => {
         <Typography variant="h5" sx={{ mb: "2rem" }}>
           Welcome to Websocket Manager Admin UI
         </Typography>
-        <LoginForm setToken={setToken} />
+        <LoginForm setIsLoggedIn={setIsLoggedIn} />
       </Box>
     </Box>
   );

@@ -21,14 +21,17 @@ import CreateTopic from "./components/CreateTopic";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 function App() {
 	const [theme, colorMode] = useMode("Light");
-	const [isLogin, setLogin] = useState(false);
-	const [user, setUser] = useState();
-	const [token, setToken] = useState();
-	console.log("User:", user);
-	console.log("Token:", token);
-	const isSidebar = !!token;
+  const[isLoggedIn,setIsLoggedIn] = useState();
+  
+	const isSidebar = !!isLoggedIn;
 
 	const url = "ws://localhost:8080";
 	const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(url, {
@@ -45,7 +48,7 @@ function App() {
 					<main className="content">
 						<Topbar setIsSidebar={isSidebar} />
 						<Routes>
-							<Route element={<PrivateRoutes />}>
+							<Route element={<PrivateRoutes isLoggedIn={isLoggedIn} />}>
 								<Route path="/" element={<Dashboard />} />
 								<Route path="/namespaces" element={<Namespaces />} />
 								<Route path="/topics" element={<Topics />} />
@@ -58,7 +61,7 @@ function App() {
 								<Route path="/createNamespace" element={<CreateNamespace />} />
 								<Route path="/createTopic" element={<CreateTopic />} />
 							</Route>
-							<Route path="/login" element={<Login setToken={setToken} />} isSidebar={false} />
+							<Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn}/>} isSidebar={false} />
 						</Routes>
 					</main>
 				</div>

@@ -21,22 +21,15 @@ const EntityDataGridTopics = (props) => {
 	const [arrTopics, setArrTopics] = useState([]);
 	const [messageHistory, setMessageHistory] = useState([]);
 
-	console.log(data);
-	/*
-	if (messageHistory.length > 0) {
-		messageHistory.pop();
-	}
-  */
-
-	useEffect(() => {
-		console.log("useEffect");
-		props.sendJsonMessage({ type: "sub-namespace", namespace: location.state.namespace });
-	}, []);
+	// useEffect(() => {
+	// 	console.log("useEffect");
+	// 	props.sendJsonMessage({ type: "sub-namespace", namespace: location.state.namespace });
+	// }, []);
 
 	useEffect(() => {
 		if (props.lastJsonMessage !== null) {
 			props.lastJsonMessage.id = uuidv4();
-			setMessageHistory((prev) => prev.concat(props.lastJsonMessage));
+			setMessageHistory((prev) =>[...prev,props.lastJsonMessage,]) ;
 			console.log(props.lastJsonMessage);
 		}
 	}, [props.lastJsonMessage, setMessageHistory]);
@@ -78,6 +71,7 @@ const EntityDataGridTopics = (props) => {
 	const columnsWebsocket = [
 		{
 			field: "msgDate",
+			flex:1,
 			headerName: "Date",
 		},
 		{
@@ -152,9 +146,9 @@ const EntityDataGridTopics = (props) => {
 					rows={
 						messageHistory
 							? messageHistory.map((entry) => ({
-									id: entry.payload.id,
+									id: entry.id,
 									msgDate: entry.payload.msgDate,
-									username: entry.payload.username,
+									username: entry.payload.userName,
 									type: entry.type,
 							  }))
 							: []

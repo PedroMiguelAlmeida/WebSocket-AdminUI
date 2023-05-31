@@ -25,7 +25,13 @@ const defaultValuesLogin = {
   password: "",
 };
 
-const LoginForm = ({setToken}) => {
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
+const LoginForm = ({setIsLoggedIn}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
@@ -45,16 +51,17 @@ const LoginForm = ({setToken}) => {
     const loggedIn = await loggedInResponse.json();
     onSubmitProps.resetForm();
     if (loggedIn) {
-      setToken({
-        token:loggedIn.sessionToken
-      })
-      console.log(loggedIn.sessionToken)
-      navigate("/")
+      setTimeout(()=>{
+        setIsLoggedIn(!!getCookie("WS-MANAGER-AUTH"))  
+        navigate("/")
+        console.log(loggedIn.sessionToken)
+      },1000)
     }
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
     await login(values, onSubmitProps);
+
   };
   <Button
     fullWidth
@@ -66,15 +73,6 @@ const LoginForm = ({setToken}) => {
   >
     Login
   </Button>;
-
-// const handleSubmit = async e => {
-//   e.preventDefault();
-//   const token = await loginUser({
-//     username,
-//     password
-//   });
-//   setToken(token);
-// }
 
   return (
     <Formik
