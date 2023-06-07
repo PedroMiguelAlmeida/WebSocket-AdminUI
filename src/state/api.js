@@ -12,11 +12,11 @@ export const api = createApi({
       provideTags: ["Namespaces"],
     }),
     getNamespace: build.query({
-      query: (namespace) => `Namespaces/${namespace}`,
+      query: (namespace) => `namespaces/${namespace}`,
       provideTags: ["Namespaces"],
     }),
     getTopic: build.query({
-      query: (namespace, topicName) => `Namespaces/${namespace}/topics/${topicName}`,
+      query: (namespace, topicName) => `namespaces/${namespace}/topics/${topicName}`,
       providesTags: ["Namespace","Topic"],
     }),
     getUsers: build.query({

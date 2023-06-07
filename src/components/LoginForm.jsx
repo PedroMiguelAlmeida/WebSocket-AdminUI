@@ -64,12 +64,12 @@ const LoginForm = ({setIsLoggedIn}) => {
 
   };
   <Button
-    fullWidth
-    type="submit"
-    sx={{
-      m: "2rem 0",
-      p: "1rem",
-    }}
+      fullWidth
+      type="submit"
+      sx={{
+        m: "2rem 0",
+        p: "1rem",
+      }}
   >
     Login
   </Button>;

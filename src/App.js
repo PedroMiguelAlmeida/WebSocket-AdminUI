@@ -29,7 +29,7 @@ function getCookie(name) {
 
 function App() {
 	const [theme, colorMode] = useMode("Light");
-  const[isLoggedIn,setIsLoggedIn] = useState();
+  	const[isLoggedIn,setIsLoggedIn] = useState();
   
 	const isSidebar = !!isLoggedIn;
 
@@ -57,7 +57,7 @@ function App() {
 								<Route path="/logs" element={<Logs />} />
 								<Route path="/about" element={<About />} />
 								<Route path="/gridTopic" element={<EntityDataGridTopics sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState} />} />
-								<Route path="/gridClient" element={<EntityDataGridClients />} />
+								<Route path="/gridClient" element={<EntityDataGridClients sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState}/>} />
 								<Route path="/createNamespace" element={<CreateNamespace />} />
 								<Route path="/createTopic" element={<CreateTopic />} />
 							</Route>
