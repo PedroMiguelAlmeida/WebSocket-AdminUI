@@ -16,7 +16,7 @@ export const api = createApi({
       provideTags: ["Namespaces"],
     }),
     getTopic: build.query({
-      query: (namespace, topicName) => `namespaces/${namespace}/topics/${topicName}`,
+      query: ({namespace, topicName}) => `namespaces/${namespace}/topics/${topicName}`,
       providesTags: ["Namespace","Topic"],
     }),
     getUsers: build.query({

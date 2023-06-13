@@ -55,7 +55,17 @@ const EntityDataGridTopics = (props) => {
   useEffect(() => {
     if (props.lastJsonMessage !== null) {
       props.lastJsonMessage.id = uuidv4();
-      setMessageHistory((prev) => [...prev, props.lastJsonMessage]);
+      setMessageHistory((prev) => {
+        // debugger;
+        const alreadyExists = !!prev.filter(
+          (msg) => msg.payload.msgDate === props.lastJsonMessage.payload.msgDate
+        ).length;
+        if (!alreadyExists) {
+          return [...prev, props.lastJsonMessage];
+        } else {
+          return prev;
+        }
+      });
       console.log(props.lastJsonMessage);
       console.log(messageHistory);
     }
@@ -99,7 +109,7 @@ const EntityDataGridTopics = (props) => {
     {
       field: "client",
       headerName: "Connected Client",
-      flex:1,
+      flex: 1,
     },
   ];
 
@@ -121,15 +131,15 @@ const EntityDataGridTopics = (props) => {
     },
     {
       field: "message",
-      // renderCell: (params) => {
-      //   return (
-      //     <Button type="button" onClick={toggleModal}>
-      //       View Message
-      //     </Button>
-      //   );
-      // },
+      renderCell: (params) => {
+        return (
+          <Button type="button" onClick={toggleModal}>
+            View Message
+          </Button>
+        );
+      },
       headerName: "Message",
-           flex: 1,
+      flex: 1,
     },
   ];
 
@@ -151,11 +161,10 @@ const EntityDataGridTopics = (props) => {
     }
   };
 
-  // const toggleModal = async (modalMessage) => {
-  //   console.log("Toggle modal",modalMessage)
-  //   setModal(!modal);
-
-  // };
+  const toggleModal = async (modalMessage) => {
+    console.log("Toggle modal", modalMessage);
+    setModal(!modal);
+  };
 
   const broadcast = async (values, onSubmitProps) => {
     const broadcastResponse = await fetch(
@@ -230,12 +239,17 @@ const EntityDataGridTopics = (props) => {
               : []
           }
           columns={columnsWebsocket}
-          // onRowSelectionModelChange={(row) => {
-          //   setModalMessage(JSON.stringify(messageHistory[0].payload.msg))
-          //   // console.log("Message history",messageHistory)
-          //   // console.log("Message history msg",JSON.stringify(messageHistory[0].payload.msg))
-          //    console.log("Message History msg",modalMessage);
-          // }}
+          onRowSelectionModelChange={(row) => {
+            // console.log(messageHistory.filter(msg=>msg.id===row[0])[0])
+            setModalMessage(
+              JSON.stringify(
+                messageHistory.filter((msg) => msg.id === row[0])[0].payload.msg
+              )
+            );
+            // console.log("Message history",messageHistory)
+            // console.log("Message history msg",JSON.stringify(messageHistory[0].payload.msg))
+            console.log("Message History msg", modalMessage);
+          }}
         />
       </Box>
       <Box>
@@ -342,17 +356,17 @@ const EntityDataGridTopics = (props) => {
           Delete
         </Button>
 
-        {/* <Modal
+        <Modal
           open={modal}
           onClose={toggleModal}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box> 
+          <Box>
             <Header title="Message" />
-           
+            {modalMessage}
           </Box>
-        </Modal> */}
+        </Modal>
       </Box>
     </Box>
   );

@@ -24,11 +24,10 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-const TopicSchema = (data) => {
-  console.log(data)
+const TopicSchema = ({isLoading,data}) => {
   const [isExpanded, setIsExpanded] = useState(true);
   // debugger
-  return (
+  return !isLoading ? (
     <Card
       sx={{
         backgroundImage: "none",
@@ -39,33 +38,42 @@ const TopicSchema = (data) => {
         <Typography variant="h5" component="div">
           Topic Schema
         </Typography>
-        {data.data.topics[0].topicSchema}
+        {data.topics[0].topicSchema}
       </CardContent>
     </Card>
-  );
+  ) : <></>
 };
 
 const EntityDataGridClients = (props) => {
   const theme = useTheme();
   const location = useLocation();
-  console.log("Location", location.state.topicName);
   const colors = tokens(theme.palette.mode);
-  // const { data, isLoading } = useGetTopicQuery(
-  //   location.state.namespace,
-  //   location.state.topicName
-  // );
-  // const { data, isLoading } = fetch(`http://localhost:8080/api/namespaces/${location.state.namespace}`)
-  const { data, isLoading } = useGetNamespaceQuery("namespace1");
-  const [messageHistory, setMessageHistory] = useState([]);
 
-  console.log(data);
+  const { data, isLoading } = useGetTopicQuery({
+    namespace: location.state.namespace,
+    topicName: location.state.topicName,
+  });
+
+  const [messageHistoryTopics, setMessageHistoryTopics] = useState([]);
 
   useEffect(() => {
     if (props.lastJsonMessage !== null) {
       props.lastJsonMessage.id = uuidv4();
-      setMessageHistory((prev) => [...prev, props.lastJsonMessage]);
+      setMessageHistoryTopics((prev) => {
+        // debugger;
+        const alreadyExists = !!prev.filter(
+          (msg) => msg.payload.msgDate === props.lastJsonMessage.payload.msgDate
+        ).length;
+        if (!alreadyExists) {
+          return [...prev, props.lastJsonMessage];
+        } else {
+          return prev;
+        }
+      });
+      console.log(props.lastJsonMessage);
+      console.log(messageHistoryTopics);
     }
-  }, [props.lastJsonMessage, setMessageHistory]);
+  }, [props.lastJsonMessage, setMessageHistoryTopics]);
 
   const columnsConnClient = [
     {
@@ -93,12 +101,15 @@ const EntityDataGridClients = (props) => {
       headerName: "Message",
     },
   ];
-
+  if(!isLoading){
+    console.log('DATA',data.topics)
+  }
+  
   return (
     <Box>
       <Box>
         <DataGrid
-          loading={!data}
+          loading={isLoading}
           getRowId={(row) => row.id}
           rows={
             data
@@ -114,11 +125,11 @@ const EntityDataGridClients = (props) => {
       </Box>
       <Box>
         <DataGrid
-          loading={!messageHistory}
+          loading={!messageHistoryTopics}
           getRowId={(row) => row.id}
           rows={
-            messageHistory
-              ? messageHistory.map((entry) => ({
+            messageHistoryTopics
+              ? messageHistoryTopics.map((entry) => ({
                   id: entry.id,
                   msgDate: entry.payload.msgDate,
                   username: entry.payload.username,
@@ -142,7 +153,7 @@ const EntityDataGridClients = (props) => {
           rowGap="20px"
           columnGap="1.33%"
         >
-          <TopicSchema data={data} />
+          <TopicSchema isLoading={isLoading} data={data} />
         </Box>
       ) : (
         <> Schema loading...</>
