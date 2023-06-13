@@ -10,7 +10,6 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import ClassOutlinedIcon from "@mui/icons-material/ClassOutlined";
 import CollectionsBookmarkOutlinedIcon from "@mui/icons-material/CollectionsBookmarkOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
-import BackupTableOutlinedIcon from "@mui/icons-material/BackupTableOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 
@@ -119,13 +118,6 @@ const Sidebar = ({isSidebar}) => {
               title="Form"
               to="/form"
               icon={<DescriptionOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Logs"
-              to="/logs"
-              icon={<BackupTableOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
