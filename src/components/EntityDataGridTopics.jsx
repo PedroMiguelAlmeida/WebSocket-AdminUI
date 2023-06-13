@@ -7,9 +7,6 @@ import {
   Modal,
   TextField,
   Typography,
-  Card,
-  CardActions,
-  CardContent,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetNamespaceQuery } from "../state/api";
@@ -278,20 +275,6 @@ const EntityDataGridTopics = (props) => {
             Add New Topic
           </Button>
         </Link>
-
-        <Card
-          sx={{
-            backgroundImage: "none",
-            borderRadius: "0.55rem",
-          }}
-        >
-          <CardContent>
-            <Typography variant="h5" component="div">
-              Schema
-            </Typography>
-            {/* {data.topics[0].topicSchema} */}
-          </CardContent>
-        </Card>
 
         <Formik
           onSubmit={handleBroadcastSubmit}
