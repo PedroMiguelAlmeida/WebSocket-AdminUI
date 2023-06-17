@@ -7,6 +7,7 @@ import { tokens } from "../theme";
 import { Redirect, Route, Switch, Router, useRoutes, useNavigate, Link } from "react-router-dom";
 import UpdateNamespace from "./UpdateNamespace";
 
+
 const EntityDataGridNamespaces = () => {
 	const [active, setActive] = useState("namespaceComponent");
 	const theme = useTheme();
@@ -20,7 +21,7 @@ const EntityDataGridNamespaces = () => {
 			field: "namespace",
 			renderCell: (params) => {
 				return (
-					<Link to={"/gridTopic"} state={{ namespace: params.value }}>
+					<Link style={{textDecorationLine:"none",textDecorationColor:"currentColor"}} to={"/gridTopic"} state={{ namespace: params.value }}>
 						{params.value}
 					</Link>
 				);
@@ -56,7 +57,7 @@ const EntityDataGridNamespaces = () => {
 	};
 
 	return (
-		<Box mt="40px" height="75vh">
+		<Box display="grid" gap="25px" mt="40px" height="75vh">
 			<DataGrid
 				loading={isLoading || !data}
 				getRowId={(row) => row.namespace}

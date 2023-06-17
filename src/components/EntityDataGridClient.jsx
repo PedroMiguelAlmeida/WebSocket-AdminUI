@@ -24,7 +24,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-const TopicSchema = ({isLoading,data}) => {
+const TopicSchema = ({ isLoading, data }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   // debugger
   return !isLoading ? (
@@ -41,7 +41,9 @@ const TopicSchema = ({isLoading,data}) => {
         {data.topics[0].topicSchema}
       </CardContent>
     </Card>
-  ) : <></>
+  ) : (
+    <></>
+  );
 };
 
 const EntityDataGridClients = (props) => {
@@ -79,6 +81,7 @@ const EntityDataGridClients = (props) => {
     {
       field: "client",
       headerName: "Connected Client",
+      flex: 1,
     },
   ];
 
@@ -90,41 +93,33 @@ const EntityDataGridClients = (props) => {
     },
     {
       field: "username",
+      flex: 1,
       headerName: "Username",
     },
     {
       field: "type",
+      flex: 1,
       headerName: "Event",
     },
     {
       field: "message",
+      flex: 1,
       headerName: "Message",
     },
   ];
-  if(!isLoading){
-    console.log('DATA',data.topics)
+  if (!isLoading) {
+    console.log("DATA", data.topics);
   }
-  
+
   return (
-    <Box>
+    <Box
+      mt="40px"
+      height="75vh"
+      sx={{ display: "grid", gap: "1", gridTemplateColumns: "repeat(2,1fr)" }}
+    >
       <Box>
         <DataGrid
-          loading={isLoading}
-          getRowId={(row) => row.id}
-          rows={
-            data
-              ? data.topics[0].clients.map((entry) => ({
-                  id: entry._id,
-                  client: entry.username,
-                }))
-              : []
-          }
-          disableSelectionOnClick
-          columns={columnsConnClient}
-        />
-      </Box>
-      <Box>
-        <DataGrid
+        sx={{ml:"2rem"}}
           loading={!messageHistoryTopics}
           getRowId={(row) => row.id}
           rows={
@@ -139,16 +134,29 @@ const EntityDataGridClients = (props) => {
               : []
           }
           columns={columnsWebsocket}
-          // onRowSelectionModelChange={(row) => {
-          //   setModalMessage(JSON.stringify(messageHistory[0].payload.msg))
-          // }}
+        />
+      </Box>
+      <Box>
+        <DataGrid
+          sx={{width:400, ml:"2rem"}}
+          loading={isLoading}
+          getRowId={(row) => row.id}
+          rows={
+            data
+              ? data.topics[0].clients.map((entry) => ({
+                  id: entry._id,
+                  client: entry.username,
+                }))
+              : []
+          }
+          disableSelectionOnClick
+          columns={columnsConnClient}
         />
       </Box>
       {data || !isLoading ? (
         <Box
           mt="20px"
-          display="grid"
-          gridTemplateColumns="repeat(4,minmax(0,1fr))"
+          ml="20px"
           justifyContent="space-between"
           rowGap="20px"
           columnGap="1.33%"

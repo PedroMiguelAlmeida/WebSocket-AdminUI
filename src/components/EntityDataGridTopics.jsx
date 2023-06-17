@@ -44,16 +44,10 @@ const EntityDataGridTopics = (props) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   console.log(data);
 
-  // useEffect(() => {
-  // 	console.log("useEffect");
-  // 	props.sendJsonMessage({ type: "sub-namespace", namespace: location.state.namespace });
-  // }, []);
-
   useEffect(() => {
     if (props.lastJsonMessage !== null) {
       props.lastJsonMessage.id = uuidv4();
       setMessageHistory((prev) => {
-        // debugger;
         const alreadyExists = !!prev.filter(
           (msg) => msg.payload.msgDate === props.lastJsonMessage.payload.msgDate
         ).length;
@@ -81,6 +75,10 @@ const EntityDataGridTopics = (props) => {
       renderCell: (params) => {
         return (
           <Link
+            style={{
+              textDecorationLine: "none",
+              textDecorationColor: "currentColor",
+            }}
             to={"/gridClient"}
             state={{
               namespace: location.state.namespace,
@@ -91,14 +89,14 @@ const EntityDataGridTopics = (props) => {
           </Link>
         );
       },
+      flex:1,
       headerName: "Topic Name",
-      flex: 1,
       editable: "true",
     },
     {
       field: "amountClients",
       headerName: "Nº Clients",
-      flex: 1,
+      flex:1,
     },
   ];
 
@@ -181,7 +179,11 @@ const EntityDataGridTopics = (props) => {
   };
 
   return (
-    <Box mt="40px" height="75vh">
+    <Box
+      mt="40px"
+      height="75vh"
+      sx={{ display: "grid", gap: "1", gridTemplateColumns: "repeat(2,1fr)" }}
+    >
       <DataGrid
         loading={isLoading || !data}
         getRowId={(row) => row.topicName}
@@ -220,36 +222,13 @@ const EntityDataGridTopics = (props) => {
           columns={columnsConnClient}
         />
       </Box>
-      <Box>
-        <DataGrid
-          loading={isLoading || !messageHistory}
-          getRowId={(row) => row.id}
-          rows={
-            messageHistory
-              ? messageHistory.map((entry) => ({
-                  id: entry.id,
-                  msgDate: entry.payload.msgDate,
-                  username: entry.payload.username,
-                  type: entry.type,
-                  message: JSON.stringify(entry.payload.msg),
-                }))
-              : []
-          }
-          columns={columnsWebsocket}
-          onRowSelectionModelChange={(row) => {
-            // console.log(messageHistory.filter(msg=>msg.id===row[0])[0])
-            setModalMessage(
-              JSON.stringify(
-                messageHistory.filter((msg) => msg.id === row[0])[0].payload.msg
-              )
-            );
-            // console.log("Message history",messageHistory)
-            // console.log("Message history msg",JSON.stringify(messageHistory[0].payload.msg))
-            console.log("Message History msg", modalMessage);
-          }}
-        />
-      </Box>
-      <Box>
+      <Box
+        sx={{
+          display: "inline-grid",
+          gap: "1",
+          gridTemplateColumns: "repeat(1,1fr)",
+        }}
+      >
         <Link
           to={"/createTopic"}
           state={{
@@ -267,12 +246,26 @@ const EntityDataGridTopics = (props) => {
           <Button
             type="button"
             sx={{
+              mt:"1rem",
+              ml: "1rem",
               backgroundColor: colors.primary[400],
               color: colors.grey[100],
               "&:hover": { backgroundColor: colors.primary[800] },
             }}
           >
             Add New Topic
+          </Button>
+          <Button
+            onClick={() => handleDelete(arrTopics)}
+            sx={{
+              mt:"1rem",
+              ml: "1rem",
+              backgroundColor: colors.primary[400],
+              color: colors.grey[100],
+              "&:hover": { backgroundColor: colors.primary[800] },
+            }}
+          >
+            Delete
           </Button>
         </Link>
 
@@ -304,14 +297,19 @@ const EntityDataGridTopics = (props) => {
                   onChange={handleChange}
                   value={values.message}
                   name="message"
-                  sx={{ gridColumn: "span 2" }}
+                  sx={{
+                    mt: "1rem",
+                    p: "1rem",
+                    gridColumn: "span 2",
+                  }}
                 />
               </Box>
               <Box>
                 <Button
                   type="submit"
                   sx={{
-                    m: "2rem 0",
+                    mt: "0.05rem",
+                    ml: "1rem",
                     p: "1rem",
                     backgroundColor: colors.primary[400],
                     color: colors.grey[100],
@@ -325,20 +323,6 @@ const EntityDataGridTopics = (props) => {
           )}
         </Formik>
 
-        <Button
-          onClick={() => handleDelete(arrTopics)}
-          sx={{
-            m: "2rem 0",
-            p: "1rem",
-            ml: "1rem",
-            backgroundColor: colors.primary[400],
-            color: colors.grey[100],
-            "&:hover": { backgroundColor: colors.primary[800] },
-          }}
-        >
-          Delete
-        </Button>
-
         <Modal
           open={modal}
           onClose={toggleModal}
@@ -350,6 +334,35 @@ const EntityDataGridTopics = (props) => {
             {modalMessage}
           </Box>
         </Modal>
+      </Box>
+      <Box>
+        <DataGrid
+          loading={isLoading || !messageHistory}
+          getRowId={(row) => row.id}
+          rows={
+            messageHistory
+              ? messageHistory.map((entry) => ({
+                  id: entry.id,
+                  msgDate: entry.payload.msgDate,
+                  username: entry.payload.username,
+                  type: entry.type,
+                  message: JSON.stringify(entry.payload.msg),
+                }))
+              : []
+          }
+          columns={columnsWebsocket}
+          onRowSelectionModelChange={(row) => {
+            // console.log(messageHistory.filter(msg=>msg.id===row[0])[0])
+            setModalMessage(
+              JSON.stringify(
+                messageHistory.filter((msg) => msg.id === row[0])[0].payload.msg
+              )
+            );
+            // console.log("Message history",messageHistory)
+            // console.log("Message history msg",JSON.stringify(messageHistory[0].payload.msg))
+            console.log("Message History msg", modalMessage);
+          }}
+        />
       </Box>
     </Box>
   );
