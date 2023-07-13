@@ -58,7 +58,7 @@ function App() {
 						<Topbar setIsSidebar={isSidebar} />
 						<Routes>
 							<Route element={<PrivateRoutes isLoggedIn={isLoggedIn} />}>
-								<Route path="/" element={<Dashboard data={namespaceData} isLoading={isLoading} isNewData={isNewData}/>} />
+								<Route path="/" element={<Dashboard setNamespaceData={setNamespaceData} data={namespaceData} isLoading={isLoading} isNewData={isNewData}/>} />
 								<Route path="/namespaces" element={<Namespaces />} />
 								<Route path="/topics" element={<Topics />} />
 								<Route path="/users" element={<Users />} />

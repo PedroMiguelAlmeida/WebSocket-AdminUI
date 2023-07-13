@@ -7,7 +7,7 @@ import { tokens } from "../theme";
 import { Redirect, Route, Switch, Router, useRoutes, useNavigate, Link } from "react-router-dom";
 import UpdateNamespace from "./UpdateNamespace";
 
-const EntityDataGridNamespaces = ({data,isLoading,isNewData}) => {
+const EntityDataGridNamespaces = ({data,isLoading,isNewData,setNamespaceData}) => {
 	const [active, setActive] = useState("namespaceComponent");
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
@@ -71,6 +71,7 @@ const EntityDataGridNamespaces = ({data,isLoading,isNewData}) => {
 		for (let i = 0; i < arrNamespaces.length; i++) {
 			console.log(` Handle Delete Topic ${{ arrNamespaces }}`);
 			await deleteNamespace(arrNamespaces[i].toString());
+			setNamespaceData(data.filter((d)=>d.namespace!==arrNamespaces[i].toString()))
 		}
 	};
 
