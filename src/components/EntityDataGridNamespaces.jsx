@@ -7,7 +7,6 @@ import { tokens } from "../theme";
 import { Redirect, Route, Switch, Router, useRoutes, useNavigate, Link } from "react-router-dom";
 import UpdateNamespace from "./UpdateNamespace";
 
-
 const EntityDataGridNamespaces = () => {
 	const [active, setActive] = useState("namespaceComponent");
 	const theme = useTheme();
@@ -21,7 +20,7 @@ const EntityDataGridNamespaces = () => {
 			field: "namespace",
 			renderCell: (params) => {
 				return (
-					<Link style={{textDecorationLine:"none",textDecorationColor:"currentColor"}} to={"/gridTopic"} state={{ namespace: params.value }}>
+					<Link style={{ textDecorationLine: "none", textDecorationColor: "currentColor" }} to={"/gridTopic"} state={{ namespace: params.value }}>
 						{params.value}
 					</Link>
 				);
@@ -43,8 +42,11 @@ const EntityDataGridNamespaces = () => {
 
 	const deleteNamespace = async (namespace) => {
 		console.log(namespace);
-		await fetch(`http://localhost:8080/api/namespaces/${namespace}`, {
+		await fetch(`http://localhost:3001/api/namespaces/${namespace}`, {
 			method: "DELETE",
+			credentials: "same-origin",
+			withCredentials: true,
+			credentials: "include",
 		});
 	};
 

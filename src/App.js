@@ -22,18 +22,18 @@ import PrivateRoutes from "./utils/PrivateRoutes";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 
 function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
+	const value = `; ${document.cookie}`;
+	const parts = value.split(`; ${name}=`);
+	if (parts.length === 2) return parts.pop().split(";").shift();
 }
 
 function App() {
 	const [theme, colorMode] = useMode("Light");
-  	const[isLoggedIn,setIsLoggedIn] = useState();
-  
+	const [isLoggedIn, setIsLoggedIn] = useState();
+
 	const isSidebar = !!isLoggedIn;
 
-	const url = "ws://localhost:8080";
+	const url = "ws://localhost:3001";
 	const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(url, {
 		onOpen: () => console.log("WS connected"),
 		onClose: () => console.log("WS disconnected"),
@@ -57,11 +57,11 @@ function App() {
 								<Route path="/logs" element={<Logs />} />
 								<Route path="/about" element={<About />} />
 								<Route path="/gridTopic" element={<EntityDataGridTopics sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState} />} />
-								<Route path="/gridClient" element={<EntityDataGridClients sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState}/>} />
+								<Route path="/gridClient" element={<EntityDataGridClients sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState} />} />
 								<Route path="/createNamespace" element={<CreateNamespace />} />
 								<Route path="/createTopic" element={<CreateTopic />} />
 							</Route>
-							<Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn}/>} isSidebar={false} />
+							<Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} isSidebar={false} />
 						</Routes>
 					</main>
 				</div>
