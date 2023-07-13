@@ -7,14 +7,14 @@ import EntityDataGrid from "../../components/EntityDataGridNamespaces";
 import EntityDataGridNamespaces from "../../components/EntityDataGridNamespaces";
 //import EntityDataGridTopics from "../../components/EntityDataGridTopics";
 
-const Dashboard = () => {
+const Dashboard = ({data,isLoading,isNewData}) => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	return (
 		<Box m="1.5rem 2.5rem">
 			<Header title="Dashboard" />
 			<Box>
-				<EntityDataGridNamespaces />
+				<EntityDataGridNamespaces data={data} isLoading={isLoading} isNewData={isNewData} />
 			</Box>
 		</Box>
 	);

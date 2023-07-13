@@ -20,6 +20,7 @@ import CreateNamespace from "./components/CreateNamespace";
 import CreateTopic from "./components/CreateTopic";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import { useGetNamespacesQuery, useGetTopicsQuery } from "./state/api";
 
 function getCookie(name) {
 	const value = `; ${document.cookie}`;
@@ -30,6 +31,14 @@ function getCookie(name) {
 function App() {
 	const [theme, colorMode] = useMode("Light");
 	const [isLoggedIn, setIsLoggedIn] = useState();
+	const { data, isLoading } = useGetNamespacesQuery();
+	const [namespaceData,setNamespaceData] = useState([])
+	// debugger
+	// if (data && data.length!=namespaceData.length) {
+	if(data && namespaceData.length==0){
+		setNamespaceData(data)
+	}
+	const [isNewData,setNewData]= useState(false)
 
 	const isSidebar = !!isLoggedIn;
 
@@ -49,7 +58,7 @@ function App() {
 						<Topbar setIsSidebar={isSidebar} />
 						<Routes>
 							<Route element={<PrivateRoutes isLoggedIn={isLoggedIn} />}>
-								<Route path="/" element={<Dashboard />} />
+								<Route path="/" element={<Dashboard data={namespaceData} isLoading={isLoading} isNewData={isNewData}/>} />
 								<Route path="/namespaces" element={<Namespaces />} />
 								<Route path="/topics" element={<Topics />} />
 								<Route path="/users" element={<Users />} />
@@ -58,8 +67,8 @@ function App() {
 								<Route path="/about" element={<About />} />
 								<Route path="/gridTopic" element={<EntityDataGridTopics sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState} />} />
 								<Route path="/gridClient" element={<EntityDataGridClients sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState} />} />
-								<Route path="/createNamespace" element={<CreateNamespace />} />
-								<Route path="/createTopic" element={<CreateTopic />} />
+								<Route path="/createNamespace" element={<CreateNamespace data={namespaceData} setNewData={setNewData} setNamespaceData={setNamespaceData}/>} />
+								<Route path="/createTopic" element={<CreateTopic  />} />
 							</Route>
 							<Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} isSidebar={false} />
 						</Routes>

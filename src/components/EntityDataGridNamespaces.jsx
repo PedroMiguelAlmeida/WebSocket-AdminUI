@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Box, useMediaQuery, useTheme, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetNamespacesQuery, useGetTopicsQuery } from "../state/api";
@@ -7,13 +7,29 @@ import { tokens } from "../theme";
 import { Redirect, Route, Switch, Router, useRoutes, useNavigate, Link } from "react-router-dom";
 import UpdateNamespace from "./UpdateNamespace";
 
-const EntityDataGridNamespaces = () => {
+const EntityDataGridNamespaces = ({data,isLoading,isNewData}) => {
 	const [active, setActive] = useState("namespaceComponent");
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
-	const { data, isLoading } = useGetNamespacesQuery();
 	const navigate = useNavigate();
 	const [arrNamespaces, setArrNamespaces] = useState([]);
+
+	
+
+	// const fetchNamespace = async () => {
+	// 	const fetchData = await fetch(`http://localhost:3001/api/namespaces`, {
+	// 		method: "GET",
+	// 		credentials: "same-origin",
+	// 		withCredentials: true,
+	// 		credentials: "include",
+	// 	}).json()
+	// 	return fetchData
+	// };
+
+	// useEffect( () => {
+	// 	data =  fetchNamespace()
+	// 	debugger
+	//   }, [isNewData]);
 
 	const columns = [
 		{
