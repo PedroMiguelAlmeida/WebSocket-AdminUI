@@ -126,6 +126,7 @@ const EntityDataGridNamespaces = ({data,isLoading,isNewData,setNamespaceData}) =
 				</Link>
 
 				<Button
+					type="button"
 					onClick={() => handleDelete(arrNamespaces)}
 					sx={{
 						m: "2rem 0",

@@ -20,7 +20,7 @@ const defaultValuesTopic = {
 	topicName: "",
 };
 
-const CreateTopicForm = () => {
+const CreateTopicForm = ({setTopicData,topicData}) => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const CreateTopicForm = () => {
 	const location = useLocation();
 
 	console.log(location.state.namespace, "CREATING Topic IN NAMESPACE");
-	const { data, isLoading } = useGetNamespaceQuery(location.state.namespace);
+	// const { data, isLoading } = useGetNamespaceQuery(location.state.namespace);
 
 	const createTopic = async (values, onSubmitProps) => {
 		const createTopic = await fetch(`http://localhost:3001/api/namespaces/${location.state.namespace}/topics`, {
@@ -39,8 +39,17 @@ const CreateTopicForm = () => {
 			credentials: "same-origin",
 			withCredentials: true,
 			credentials: "include",
-		});
+		})
+		const topicCreated = await createTopic.json();
 		onSubmitProps.resetForm();
+		if(topicCreated){
+			const topic = topicCreated.topics.find((topic) => topic.topicName === values.topicName)
+			setTimeout(() => {
+				setTopicData(topicCreated)
+				navigate(-1);
+			  }, 1000);
+			console.log("createdTopic",topicCreated)
+		}
 	};
 
 	const handleFormSubmit = async (values, onSubmitProps) => {

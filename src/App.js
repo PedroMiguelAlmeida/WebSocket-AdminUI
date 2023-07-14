@@ -20,7 +20,7 @@ import CreateNamespace from "./components/CreateNamespace";
 import CreateTopic from "./components/CreateTopic";
 import PrivateRoutes from "./utils/PrivateRoutes";
 import useWebSocket, { ReadyState } from "react-use-websocket";
-import { useGetNamespacesQuery, useGetTopicsQuery } from "./state/api";
+import { useGetNamespacesQuery, useGetTopicsQuery,useGetNamespaceQuery } from "./state/api";
 
 function getCookie(name) {
 	const value = `; ${document.cookie}`;
@@ -32,7 +32,9 @@ function App() {
 	const [theme, colorMode] = useMode("Light");
 	const [isLoggedIn, setIsLoggedIn] = useState();
 	const { data, isLoading } = useGetNamespacesQuery();
+	const [topicData,setTopicData]=useState([])
 	const [namespaceData,setNamespaceData] = useState([])
+	
 	// debugger
 	// if (data && data.length!=namespaceData.length) {
 	if(data && namespaceData.length==0){
@@ -65,10 +67,10 @@ function App() {
 								<Route path="/form" element={<Form />} />
 								<Route path="/logs" element={<Logs />} />
 								<Route path="/about" element={<About />} />
-								<Route path="/gridTopic" element={<EntityDataGridTopics sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState} />} />
+								<Route path="/gridTopic" element={<EntityDataGridTopics topicData = {topicData} setTopicData={setTopicData}  sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState} isNewData={isNewData}/>} />
 								<Route path="/gridClient" element={<EntityDataGridClients sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState} />} />
 								<Route path="/createNamespace" element={<CreateNamespace data={namespaceData} setNewData={setNewData} setNamespaceData={setNamespaceData}/>} />
-								<Route path="/createTopic" element={<CreateTopic  />} />
+								<Route path="/createTopic" element={<CreateTopic setTopicData={setTopicData} topicData={topicData} />} />
 							</Route>
 							<Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} isSidebar={false} />
 						</Routes>

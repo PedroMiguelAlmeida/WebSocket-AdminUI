@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { getRowIdFromRowModel } from "@mui/x-data-grid/internals";
 
-const EntityDataGridTopics = (props) => {
+const EntityDataGridTopics = ({setTopicData,sendJsonMessage,lastJsonMessage,readyState,isNewData,topicData}) => {
 	const theme = useTheme();
 	const location = useLocation();
 	const colors = tokens(theme.palette.mode);
@@ -28,21 +28,28 @@ const EntityDataGridTopics = (props) => {
 	const isNonMobile = useMediaQuery("(min-width:600px)");
 	console.log(data);
 
+
+
+	if((data && (topicData.namespace!==location.state.namespace  ||  topicData.length==0))){
+		setTopicData(data)
+	}
+	console.log("topicData",topicData)
+
 	useEffect(() => {
-		if (props.lastJsonMessage !== null) {
-			props.lastJsonMessage.id = uuidv4();
+		if (lastJsonMessage !== null) {
+			lastJsonMessage.id = uuidv4();
 			setMessageHistory((prev) => {
-				const alreadyExists = !!prev.filter((msg) => msg.payload.msgDate === props.lastJsonMessage.payload.msgDate).length;
+				const alreadyExists = !!prev.filter((msg) => msg.payload.msgDate === lastJsonMessage.payload.msgDate).length;
 				if (!alreadyExists) {
-					return [...prev, props.lastJsonMessage];
+					return [...prev, lastJsonMessage];
 				} else {
 					return prev;
 				}
 			});
-			console.log(props.lastJsonMessage);
+			console.log(lastJsonMessage);
 			console.log(messageHistory);
 		}
-	}, [props.lastJsonMessage, setMessageHistory]);
+	}, [lastJsonMessage, setMessageHistory]);
 
 	const broadCastSchema = yup.object().shape({
 		message: yup.string(),
@@ -135,6 +142,14 @@ const EntityDataGridTopics = (props) => {
 		for (let i = 0; i < arrTopics.length; i++) {
 			console.log(` Handle Delete Topic ${{ arrTopics }}`);
 			await deleteTopic(arrTopics[i].toString());
+			let namespace = topicData
+			//const filter = topicData.topics.filter((d)=>d.topicName!==arrTopics[i].toString())
+			const topicIndex = namespace.topics.findIndex((topic) => topic.topicName === arrTopics[i].toString())
+			if (topicIndex > -1) namespace.topics.splice(topicIndex, 1)
+			// namespace.topics = filter
+			console.log("FILTER",namespace)
+			setTopicData(namespace)
+
 		}
 	};
 
@@ -163,11 +178,11 @@ const EntityDataGridTopics = (props) => {
 	return (
 		<Box mt="40px" height="75vh" sx={{ display: "grid", gap: "1", gridTemplateColumns: "repeat(2,1fr)" }}>
 			<DataGrid
-				loading={isLoading || !data}
+				loading={isLoading || !topicData}
 				getRowId={(row) => row.topicName}
 				rows={
-					data
-						? data.topics.map((entry) => ({
+					topicData && topicData.topics
+						? topicData.topics.map((entry) => ({
 								id: entry._id,
 								topicName: entry.topicName,
 								amountClients: entry.clients.length,
@@ -186,11 +201,11 @@ const EntityDataGridTopics = (props) => {
 			/>
 			<Box>
 				<DataGrid
-					loading={isLoading || !data}
+					loading={isLoading || !topicData}
 					getRowId={(row) => row.id}
 					rows={
-						data
-							? data.clients.map((entry) => ({
+						topicData && topicData.clients
+							? topicData.clients.map((entry) => ({
 									id: entry._id,
 									client: entry.username,
 							  }))
@@ -204,7 +219,7 @@ const EntityDataGridTopics = (props) => {
 				sx={{
 					display: "inline-grid",
 					gap: "1",
-					gridTemplateColumns: "repeat(1,1fr)",
+					gridTemplateColumns: "repeat(2,1fr)",
 				}}
 			>
 				<Link
@@ -224,8 +239,9 @@ const EntityDataGridTopics = (props) => {
 					<Button
 						type="button"
 						sx={{
-							mt: "1rem",
+							mt: "0.05rem",
 							ml: "1rem",
+							p: "1rem",
 							backgroundColor: colors.primary[400],
 							color: colors.grey[100],
 							"&:hover": { backgroundColor: colors.primary[800] },
@@ -233,10 +249,14 @@ const EntityDataGridTopics = (props) => {
 					>
 						Add New Topic
 					</Button>
-					<Button
+				</Link>
+
+				<Button
+						type="button"
 						onClick={() => handleDelete(arrTopics)}
 						sx={{
-							mt: "1rem",
+							m: "2rem 0",
+							p: "1rem",
 							ml: "1rem",
 							backgroundColor: colors.primary[400],
 							color: colors.grey[100],
@@ -245,7 +265,7 @@ const EntityDataGridTopics = (props) => {
 					>
 						Delete
 					</Button>
-				</Link>
+
 
 				<Formik onSubmit={handleBroadcastSubmit} initialValues={defaultValuesBroadcast} validationSchema={broadCastSchema}>
 					{({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => (
