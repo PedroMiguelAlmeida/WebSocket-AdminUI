@@ -148,6 +148,10 @@ const EntityDataGridTopics = ({ setTopicData, sendJsonMessage, lastJsonMessage, 
 		}
 	};
 
+	const handleRefresh = async(topicData) =>{
+		setTopicData({...topicData,topics: topicData.topics});
+	} 
+
 	const toggleModal = async (modalMessage) => {
 		console.log("Toggle modal", modalMessage);
 		setModal(!modal);
@@ -211,13 +215,14 @@ const EntityDataGridTopics = ({ setTopicData, sendJsonMessage, lastJsonMessage, 
 					columns={columnsConnClient}
 				/>
 			</Box>
+
 			<Box
 				sx={{
 					display: "inline-grid",
 					gap: "1",
 					gridTemplateColumns: "repeat(2,1fr)",
 				}}
-				v
+				
 			>
 				<Box>
 					<Link
@@ -261,6 +266,21 @@ const EntityDataGridTopics = ({ setTopicData, sendJsonMessage, lastJsonMessage, 
 						}}
 					>
 						Delete
+					</Button>
+
+					<Button
+						type="button"
+						onClick={() => handleRefresh(topicData)}
+						sx={{
+							m: "2rem 0",
+							p: "1rem",
+							ml: "1rem",
+							backgroundColor: colors.primary[400],
+							color: colors.grey[100],
+							"&:hover": { backgroundColor: colors.primary[800] },
+						}}
+					>
+						Refresh Clients
 					</Button>
 				</Box>
 				<Formik onSubmit={handleBroadcastSubmit} initialValues={defaultValuesBroadcast} validationSchema={broadCastSchema}>
