@@ -15,7 +15,7 @@ const defaultValuesNamespace = {
 	namespace: "",
 };
 
-const CreateNamespaceForm = ({data,setNewData,setNamespaceData}) => {
+const CreateNamespaceForm = ({ data, setNewData, setNamespaceData }) => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	const dispatch = useDispatch();
@@ -30,15 +30,16 @@ const CreateNamespaceForm = ({data,setNewData,setNamespaceData}) => {
 			credentials: "same-origin",
 			withCredentials: true,
 			credentials: "include",
-		})
-    const namespaceCreated = await createNamespace.json();
+		});
+		const namespaceCreated = await createNamespace.json();
 		onSubmitProps.resetForm();
-    if (namespaceCreated) {
-      setTimeout(() => {
-        setNamespaceData([...data,namespaceCreated])
-        navigate("/");
-      }, 1000);
-    }
+		if (namespaceCreated) {
+			setTimeout(() => {
+				setNamespaceData([...data, namespaceCreated]);
+				navigate("/");
+				console.log("namespaceCreated", namespaceCreated);
+			}, 1000);
+		}
 	};
 
 	const handleFormSubmit = async (values, onSubmitProps) => {

@@ -15,7 +15,7 @@ import { useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { getRowIdFromRowModel } from "@mui/x-data-grid/internals";
 
-const EntityDataGridTopics = ({setTopicData,sendJsonMessage,lastJsonMessage,readyState,isNewData,topicData}) => {
+const EntityDataGridTopics = ({ setTopicData, sendJsonMessage, lastJsonMessage, readyState, isNewData, topicData }) => {
 	const theme = useTheme();
 	const location = useLocation();
 	const colors = tokens(theme.palette.mode);
@@ -28,12 +28,10 @@ const EntityDataGridTopics = ({setTopicData,sendJsonMessage,lastJsonMessage,read
 	const isNonMobile = useMediaQuery("(min-width:600px)");
 	console.log(data);
 
-
-
-	if((data && (topicData.namespace!==location.state.namespace  ||  topicData.length==0))){
-		setTopicData(data)
+	if (data && (topicData.namespace !== location.state.namespace || topicData.length == 0)) {
+		setTopicData(data);
 	}
-	console.log("topicData",topicData)
+	console.log("topicData", topicData);
 
 	useEffect(() => {
 		if (lastJsonMessage !== null) {
@@ -142,14 +140,13 @@ const EntityDataGridTopics = ({setTopicData,sendJsonMessage,lastJsonMessage,read
 		for (let i = 0; i < arrTopics.length; i++) {
 			console.log(` Handle Delete Topic ${{ arrTopics }}`);
 			await deleteTopic(arrTopics[i].toString());
-			let namespace = topicData
+			let namespace = topicData;
 			//const filter = topicData.topics.filter((d)=>d.topicName!==arrTopics[i].toString())
-			const topicIndex = namespace.topics.findIndex((topic) => topic.topicName === arrTopics[i].toString())
-			if (topicIndex > -1) namespace.topics.splice(topicIndex, 1)
+			const topicIndex = namespace.topics.findIndex((topic) => topic.topicName === arrTopics[i].toString());
+			if (topicIndex > -1) namespace.topics.splice(topicIndex, 1);
 			// namespace.topics = filter
-			console.log("FILTER",namespace)
-			setTopicData(namespace)
-
+			console.log("FILTER", namespace);
+			setTopicData(namespace);
 		}
 	};
 
@@ -221,37 +218,38 @@ const EntityDataGridTopics = ({setTopicData,sendJsonMessage,lastJsonMessage,read
 					gap: "1",
 					gridTemplateColumns: "repeat(2,1fr)",
 				}}
+				v
 			>
-				<Link
-					to={"/createTopic"}
-					state={{
-						namespace: location.state.namespace,
-					}}
-					sx={{
-						m: "2rem 0",
-						p: "1rem",
-						ml: "1rem",
-						backgroundColor: colors.primary[400],
-						color: colors.grey[100],
-						"&:hover": { backgroundColor: colors.primary[800] },
-					}}
-				>
-					<Button
-						type="button"
+				<Box>
+					<Link
+						to={"/createTopic"}
+						state={{
+							namespace: location.state.namespace,
+						}}
 						sx={{
-							mt: "0.05rem",
-							ml: "1rem",
+							m: "2rem 0",
 							p: "1rem",
+							ml: "1rem",
 							backgroundColor: colors.primary[400],
 							color: colors.grey[100],
 							"&:hover": { backgroundColor: colors.primary[800] },
 						}}
 					>
-						Add New Topic
-					</Button>
-				</Link>
-
-				<Button
+						<Button
+							type="button"
+							sx={{
+								mt: "0.05rem",
+								ml: "1rem",
+								p: "1rem",
+								backgroundColor: colors.primary[400],
+								color: colors.grey[100],
+								"&:hover": { backgroundColor: colors.primary[800] },
+							}}
+						>
+							Add New Topic
+						</Button>
+					</Link>
+					<Button
 						type="button"
 						onClick={() => handleDelete(arrTopics)}
 						sx={{
@@ -265,8 +263,7 @@ const EntityDataGridTopics = ({setTopicData,sendJsonMessage,lastJsonMessage,read
 					>
 						Delete
 					</Button>
-
-
+				</Box>
 				<Formik onSubmit={handleBroadcastSubmit} initialValues={defaultValuesBroadcast} validationSchema={broadCastSchema}>
 					{({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => (
 						<form onSubmit={handleSubmit}>
@@ -285,6 +282,10 @@ const EntityDataGridTopics = ({setTopicData,sendJsonMessage,lastJsonMessage,read
 									value={values.message}
 									name="message"
 									sx={{
+										"& label": {
+											left: "1rem",
+											top: "1rem",
+										},
 										mt: "1rem",
 										p: "1rem",
 										gridColumn: "span 2",
@@ -309,9 +310,20 @@ const EntityDataGridTopics = ({setTopicData,sendJsonMessage,lastJsonMessage,read
 						</form>
 					)}
 				</Formik>
-
 				<Modal open={modal} onClose={toggleModal} aria-labelledby="modal-modal-title" aria-describedby="modal-modal-description">
-					<Box>
+					<Box
+						sx={{
+							position: "absolute",
+							top: "50%",
+							left: "50%",
+							transform: "translate(-50%, -50%)",
+							width: 400,
+							bgcolor: "background.paper",
+							border: "2px solid #000",
+							boxShadow: 24,
+							p: 4,
+						}}
+					>
 						<Header title="Message" />
 						{modalMessage}
 					</Box>

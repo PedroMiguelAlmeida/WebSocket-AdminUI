@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, useMediaQuery, useTheme, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useGetNamespacesQuery, useGetTopicsQuery } from "../state/api";
@@ -7,14 +7,12 @@ import { tokens } from "../theme";
 import { Redirect, Route, Switch, Router, useRoutes, useNavigate, Link } from "react-router-dom";
 import UpdateNamespace from "./UpdateNamespace";
 
-const EntityDataGridNamespaces = ({data,isLoading,isNewData,setNamespaceData}) => {
+const EntityDataGridNamespaces = ({ data, isLoading, isNewData, setNamespaceData }) => {
 	const [active, setActive] = useState("namespaceComponent");
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	const navigate = useNavigate();
 	const [arrNamespaces, setArrNamespaces] = useState([]);
-
-	
 
 	// const fetchNamespace = async () => {
 	// 	const fetchData = await fetch(`http://localhost:3001/api/namespaces`, {
@@ -57,7 +55,6 @@ const EntityDataGridNamespaces = ({data,isLoading,isNewData,setNamespaceData}) =
 	];
 
 	const deleteNamespace = async (namespace) => {
-		console.log(namespace);
 		await fetch(`http://localhost:3001/api/namespaces/${namespace}`, {
 			method: "DELETE",
 			credentials: "same-origin",
@@ -67,11 +64,10 @@ const EntityDataGridNamespaces = ({data,isLoading,isNewData,setNamespaceData}) =
 	};
 
 	const handleDelete = async (arrNamespaces) => {
-		console.log(arrNamespaces);
 		for (let i = 0; i < arrNamespaces.length; i++) {
 			console.log(` Handle Delete Topic ${{ arrNamespaces }}`);
 			await deleteNamespace(arrNamespaces[i].toString());
-			setNamespaceData(data.filter((d)=>d.namespace!==arrNamespaces[i].toString()))
+			setNamespaceData(data.filter((d) => d.namespace !== arrNamespaces[i].toString()));
 		}
 	};
 
@@ -95,9 +91,7 @@ const EntityDataGridNamespaces = ({data,isLoading,isNewData,setNamespaceData}) =
 				disableSelectionOnClick
 				onRowSelectionModelChange={(row) => {
 					arrNamespaces.pop(row);
-					console.log(row);
 					setArrNamespaces([...arrNamespaces, row]);
-					console.log(arrNamespaces);
 				}}
 			/>
 
