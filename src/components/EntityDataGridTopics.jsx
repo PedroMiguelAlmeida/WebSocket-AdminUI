@@ -26,12 +26,10 @@ const EntityDataGridTopics = ({ setTopicData, sendJsonMessage, lastJsonMessage, 
 	const [modal, setModal] = useState(false);
 	const [modalMessage, setModalMessage] = useState();
 	const isNonMobile = useMediaQuery("(min-width:600px)");
-	console.log(data);
 
 	if (data && (topicData.namespace !== location.state.namespace || topicData.length == 0)) {
 		setTopicData(data);
 	}
-	console.log("topicData", topicData);
 
 	useEffect(() => {
 		if (lastJsonMessage !== null) {
@@ -196,6 +194,7 @@ const EntityDataGridTopics = ({ setTopicData, sendJsonMessage, lastJsonMessage, 
 					console.log(arrTopics);
 				}}
 			/>
+			{/* CLIENTES DO NAMESPACE */}
 			<Box>
 				<DataGrid
 					loading={isLoading || !topicData}
