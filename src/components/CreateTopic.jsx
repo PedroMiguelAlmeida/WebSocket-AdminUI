@@ -20,7 +20,7 @@ import { useGetNamespaceQuery } from "../state/api";
 
 const topicSchema = yup.object().shape({
   topicName: yup.string().required("Topic must have a name"),
-  schema: yup.string().optional(),
+  topicSchema: yup.string().optional(),
 });
 
 const defaultValuesTopic = {
@@ -39,6 +39,7 @@ const CreateTopicForm = ({ setTopicData, topicData }) => {
   // const { data, isLoading } = useGetNamespaceQuery(location.state.namespace);
 
   const createTopic = async (values, onSubmitProps) => {
+    console.log("VALUES", values);
     const createTopic = await fetch(
       `http://localhost:3001/api/namespaces/${location.state.namespace}/topics`,
       {
@@ -50,11 +51,24 @@ const CreateTopicForm = ({ setTopicData, topicData }) => {
         credentials: "include",
       }
     );
+    // if(values.schema){
+    // 	const uploadedSchema = await fetch(
+    // 		`http://localhost:3001/api/namespaces/${location.state.namespace}/topics/${values.topicName}/schema`,
+    // 		{
+    // 		  method: "PUT",
+    // 		  headers: { "Content-Type": "application/json" },
+    // 		  body: JSON.stringify(values),
+    // 		  credentials: "same-origin",
+    // 		  withCredentials: true,
+    // 		  credentials: "include",
+    // 		}
+    // 	  );
+    // }
     const topicCreated = await createTopic.json();
     onSubmitProps.resetForm();
     if (topicCreated) {
       setTimeout(() => {
-        setTopicData({...topicData,topics: topicCreated.topics});
+        setTopicData({ ...topicData, topics: topicCreated.topics });
         navigate(-1);
       }, 1000);
       console.log("createdTopic", topicCreated);
@@ -95,7 +109,19 @@ const CreateTopicForm = ({ setTopicData, topicData }) => {
               error={Boolean(touched.topicName) && Boolean(errors.topicName)}
               helperText={touched.topicName && errors.topicName}
             />
-            <Dropzone
+            <TextField
+              label="Topic Schema"
+              onBlur={handleBlur}
+              onChange={handleChange}
+              value={values.topicSchema}
+              sx={{
+                ml: "1rem",
+              }}
+              name="topicSchema"
+              error={Boolean(touched.topicSchema) && Boolean(errors.topicSchema)}
+              helperText={touched.topicSchema && errors.topicSchema}
+            />
+            {/* <Dropzone
               acceptedFiles=".json, .json.schema"
               multiple={false}
               onDrop={(acceptedFiles) =>
@@ -120,7 +146,7 @@ const CreateTopicForm = ({ setTopicData, topicData }) => {
                   )}
                 </Box>
               )}
-            </Dropzone>
+            </Dropzone> */}
           </Box>
 
           <Box>
