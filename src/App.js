@@ -71,7 +71,7 @@ function App() {
 								<Route path="/about" element={<About />} />
 								<Route path="/gridTopic" element={<EntityDataGridTopics topicData={topicData} setTopicData={setTopicData} sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState} isNewData={isNewData} />} />
 								<Route path="/gridClient" element={<EntityDataGridClients sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState} />} />
-								<Route path="/createNamespace" element={<CreateNamespace data={namespaceData} setNewData={setNewData} setNamespaceData={setNamespaceData} user={user} />} />
+								<Route path="/createNamespace" element={<CreateNamespace data={namespaceData} setNewData={setNewData} setNamespaceData={setNamespaceData} namespacesData={namespaceData} user={user} />} />
 								<Route path="/createTopic" element={<CreateTopic setTopicData={setTopicData} topicData={topicData} user={user}/>} />
 							</Route>
 							<Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} isSidebar={false} />
