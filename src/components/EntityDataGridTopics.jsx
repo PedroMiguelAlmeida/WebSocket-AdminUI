@@ -149,7 +149,17 @@ const EntityDataGridTopics = ({ setTopicData, sendJsonMessage, lastJsonMessage, 
 	};
 
 	const handleRefresh = async(topicData) =>{
-		setTopicData({...topicData,topics: topicData.topics});
+		const refreshedTopics = await fetch(
+			`http://localhost:3001/api/namespaces/${location.state.namespace}/topics`,
+			{
+			  method: "GET",
+			  headers: { "Content-Type": "application/json" },
+			  credentials: "same-origin",
+			  withCredentials: true,
+			  credentials: "include",
+			}
+		)
+		setTopicData({...topicData,topics: refreshedTopics.topics});
 	} 
 
 	const toggleModal = async (modalMessage) => {
