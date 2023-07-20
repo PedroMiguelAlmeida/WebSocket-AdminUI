@@ -24,7 +24,7 @@ function getCookie(name) {
 	if (parts.length === 2) return parts.pop().split(";").shift();
 }
 
-const LoginForm = ({ setIsLoggedIn }) => {
+const LoginForm = ({ setIsLoggedIn, setUser }) => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	const dispatch = useDispatch();
@@ -45,6 +45,7 @@ const LoginForm = ({ setIsLoggedIn }) => {
 		if (loggedIn) {
 			setTimeout(() => {
 				setIsLoggedIn(!!getCookie("WS-MANAGER-AUTH"));
+				setUser(loggedIn.user)
 				navigate("/");
 				console.log(loggedIn.sessionToken);
 			}, 1000);

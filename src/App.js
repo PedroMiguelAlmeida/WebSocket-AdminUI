@@ -34,6 +34,7 @@ function App() {
 	const { data, isLoading } = useGetNamespacesQuery();
 	const [topicData, setTopicData] = useState([]);
 	const [namespaceData, setNamespaceData] = useState([]);
+	const [user,setUser] = useState()
 
 	// debugger
 	// if (data && data.length!=namespaceData.length) {
@@ -70,10 +71,10 @@ function App() {
 								<Route path="/about" element={<About />} />
 								<Route path="/gridTopic" element={<EntityDataGridTopics topicData={topicData} setTopicData={setTopicData} sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState} isNewData={isNewData} />} />
 								<Route path="/gridClient" element={<EntityDataGridClients sendJsonMessage={sendJsonMessage} lastJsonMessage={lastJsonMessage} readyState={readyState} />} />
-								<Route path="/createNamespace" element={<CreateNamespace data={namespaceData} setNewData={setNewData} setNamespaceData={setNamespaceData} />} />
-								<Route path="/createTopic" element={<CreateTopic setTopicData={setTopicData} topicData={topicData} />} />
+								<Route path="/createNamespace" element={<CreateNamespace data={namespaceData} setNewData={setNewData} setNamespaceData={setNamespaceData} user={user} />} />
+								<Route path="/createTopic" element={<CreateTopic setTopicData={setTopicData} topicData={topicData} user={user}/>} />
 							</Route>
-							<Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} />} isSidebar={false} />
+							<Route path="/login" element={<Login setIsLoggedIn={setIsLoggedIn} setUser={setUser} />} isSidebar={false} />
 						</Routes>
 					</main>
 				</div>

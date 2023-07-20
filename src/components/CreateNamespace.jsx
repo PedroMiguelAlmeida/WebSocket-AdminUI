@@ -15,7 +15,7 @@ const defaultValuesNamespace = {
 	namespace: "",
 };
 
-const CreateNamespaceForm = ({ data, setNewData, setNamespaceData }) => {
+const CreateNamespaceForm = ({ data, setNewData, setNamespaceData, user }) => {
 	const theme = useTheme();
 	const colors = tokens(theme.palette.mode);
 	const dispatch = useDispatch();
@@ -33,7 +33,16 @@ const CreateNamespaceForm = ({ data, setNewData, setNamespaceData }) => {
 		});
 		const namespaceCreated = await createNamespace.json();
 		onSubmitProps.resetForm();
+		console.log("USER",user)
 		if (namespaceCreated) {
+			const subscribed = await fetch(`http://localhost:3001/api/namespaces/${namespaceCreated.namespace}/clients/${user._id}`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(values),
+				credentials: "same-origin",
+				withCredentials: true,
+				credentials: "include",
+			})
 			setTimeout(() => {
 				setNamespaceData([...data, namespaceCreated]);
 				navigate("/");

@@ -27,7 +27,7 @@ const defaultValuesTopic = {
   topicName: "",
 };
 
-const CreateTopicForm = ({ setTopicData, topicData }) => {
+const CreateTopicForm = ({ setTopicData, topicData, user }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const dispatch = useDispatch();
@@ -51,22 +51,17 @@ const CreateTopicForm = ({ setTopicData, topicData }) => {
         credentials: "include",
       }
     );
-    // if(values.schema){
-    // 	const uploadedSchema = await fetch(
-    // 		`http://localhost:3001/api/namespaces/${location.state.namespace}/topics/${values.topicName}/schema`,
-    // 		{
-    // 		  method: "PUT",
-    // 		  headers: { "Content-Type": "application/json" },
-    // 		  body: JSON.stringify(values),
-    // 		  credentials: "same-origin",
-    // 		  withCredentials: true,
-    // 		  credentials: "include",
-    // 		}
-    // 	  );
-    // }
     const topicCreated = await createTopic.json();
     onSubmitProps.resetForm();
     if (topicCreated) {
+      const subscribed = await fetch(`http://localhost:3001/api/namespaces/${location.state.namespace}/topics/${values.topicName}/clients/${user._id}`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify(values),
+				credentials: "same-origin",
+				withCredentials: true,
+				credentials: "include",
+			})
       setTimeout(() => {
         setTopicData({ ...topicData, topics: topicCreated.topics });
         navigate(-1);
